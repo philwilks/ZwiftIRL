@@ -59,7 +59,7 @@ function App() {
         ctx.fillStyle = "#fff";
         ctx.font = canvasFont(110)
         ctx.textAlign = 'right';
-        ctx.fillText(Math.min(Math.abs(watts), 9999), 282, 130)
+        ctx.fillText(Math.min(Math.abs(watts), 9999), 288, 130)
         
                 
         // ctx.fillText(name, 10, 250)
@@ -114,6 +114,11 @@ function App() {
         setWatts(value)
     }
     
+    function onFormSubmit(e) {
+        e.preventDefault()
+        composeImage(photo)
+    }
+    
     return (
         <div className="">
             <div className="bg-orange p-4 text-center mb-8">
@@ -131,32 +136,33 @@ function App() {
             </div>
             {photo ?
                 <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
-                    <div className="flex items-center pb-3 border-b border-gray-600 mb-3">
-                        <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">2</div>
-                        <div className="pl-2 text-white text-lg">Customize!</div>
-                    </div>
-                    <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
-                        <div>
-                            <span className="text-white pr-2">Your name:</span>
-                            <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
-                                   className="bg-gray-700 text-white p-1 rounded"/>
+                    <form onSubmit={(e) => onFormSubmit(e)}>
+                        <div className="flex items-center pb-3 border-b border-gray-600 mb-3">
+                            <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">2</div>
+                            <div className="pl-2 text-white text-lg">Customize!</div>
                         </div>
-                        <div>
-                            <span className="text-white pl-8 pr-2">Route badge:</span>
-                            <input type="text" value={route} onChange={(e) => onRouteChanged(e.target.value)}
-                                   className="bg-gray-700 text-white p-1 rounded"/>
+                        <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
+                            <div>
+                                <span className="text-white pr-2">Your name:</span>
+                                <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                            <div>
+                                <span className="text-white pl-8 pr-2">Route badge:</span>
+                                <input type="text" value={route} onChange={(e) => onRouteChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                            <div>
+                                <span className="text-white pl-8 pr-2">Watts:</span>
+                                <input type="number" min="0" max="2000" step="1" value={watts}
+                                       onChange={(e) => onWattsChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
                         </div>
-                        <div>
-                            <span className="text-white pl-8 pr-2">Watts:</span>
-                            <input type="number" min="0" max="2000" step="10" value={watts}
-                                   onChange={(e) => onWattsChanged(e.target.value)}
-                                   className="bg-gray-700 text-white p-1 rounded"/>
+                        <div className="">
+                            <button className="bg-orange py-1 px-8 rounded text-white font-semibold">Update</button>
                         </div>
-                    </div>
-                    <div className="">
-                        <button className="bg-orange py-1 px-8 rounded text-white font-semibold" onClick={() => composeImage(photo)}>Update
-                        </button>
-                    </div>
+                    </form>
                 </div>
                 :
                 <div className="bg-gray-800 mx-auto w-800 text-white text-center mt-10 text-lg">
