@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Picker from 'emoji-picker-react'
 
 import distanceBgUrl from '../images/distance.png';
 import powerBgUrl from '../images/power.png';
@@ -29,6 +30,8 @@ function App() {
     const [route, setRoute] = useState('')
     const [watts, setWatts] = useState(randomWatts())
     const [powerup, setPowerup] = useState('')
+
+    const [chosenEmoji, setChosenEmoji] = useState('🏳️‍🌈');
     
     const [composition, setComposition] = useState(null)
 
@@ -94,7 +97,15 @@ function App() {
         ctx.textAlign = 'right';
         ctx.fillText(name ? name : 'Zwift IRL', 1842, 600)
         if (friend) {
-            ctx.fillText(friend, 1842, 553)            
+            ctx.fillText(friend, 1842, 553)
+            ctx.fillText(chosenEmoji, 1902, 553)    
+        }
+        if (chosenEmoji) {
+            ctx.font = canvasFont(35)
+            ctx.fillText(chosenEmoji, 1884, 605)
+            if (friend) {
+                ctx.fillText(chosenEmoji, 1884, 558)
+            }
         }
         
         
@@ -156,6 +167,10 @@ function App() {
         setPowerup(value)
     }
     
+    const onEmojiClick = (event, emojiObject) => {
+        setChosenEmoji(emojiObject.emoji);
+    };
+    
     function onFormSubmit(e) {
         e.preventDefault()
         composeImage(photo)
@@ -212,6 +227,21 @@ function App() {
                                 <span className="text-white pr-2">Your name:</span>
                                 <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)} placeholder="Add your name"
                                        className="bg-gray-700 text-white p-1 rounded placeholder-gray-500"/>
+                            </div>
+                            <div>
+                                {chosenEmoji}
+                                <Picker onEmojiClick={onEmojiClick} groupVisibility={{
+                                    smileys_people: false,
+                                    animals_nature: false,
+                                    food_drink: false,
+                                    travel_places: false,
+                                    activities: false,
+                                    objects: false,
+                                    symbols: false,
+                                    flags: true,
+                                    recently_used: false
+                                }}
+                                groupNames={{ flags: 'Country' }}/>
                             </div>
                             <div>
                                 <span className="text-white pl-8 pr-2">Friend name:</span>
