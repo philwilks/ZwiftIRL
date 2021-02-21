@@ -4,6 +4,10 @@ import distanceBgUrl from '../images/distance.png';
 import powerBgUrl from '../images/power.png';
 import routeBgUrl from '../images/route.png';
 import madeWithUrl from '../images/madewith.png';
+import mapUrl from '../images/madewith.png';
+import ridersUrl from '../images/madewith.png';
+import spareUrl from '../images/madewith.png';
+
 import featherUrl from '../images/feather.png';
 import aeroUrl from '../images/aero.png';
 import sunUrl from '../images/sun.png';
@@ -12,29 +16,34 @@ import tailwindUrl from '../images/tailwind.png';
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
-    const imageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl]
-    const images = []
+    const uiImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, mapUrl, ridersUrl, spareUrl]
+    const puImageUrls = [featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl]
+    const uiImages = []
+    const puImages = []
+    const powerupList = ['Feather', 'Aero Boost', 'Vitamin D', 'Coffee Stop', 'Tailwind']
     
     const [isLoading, setIsLoading] = useState(true)
     const [photo, setPhoto] = useState(null)
     const [name, setName] = useState('Your name')
     const [route, setRoute] = useState('')
     const [watts, setWatts] = useState(randomWatts())
+    const [powerup, setPowerup] = useState('')
     
     const [composition, setComposition] = useState(null)
 
     useEffect(() => {        
-        preloadImages(imageUrls).then(r => {})
+        preloadImages(uiImageUrls, uiImages).then(r => {})
+        preloadImages(puImageUrls, puImages).then(r => {})
     })
     
-    const preloadImages = async (srcArray) => {
+    const preloadImages = async (srcArray, imageArray) => {
         const promises = await srcArray.map((src) => {
             return new Promise(function (resolve, reject) {
                     const img = new Image()
                     img.src = src
                     img.onload = resolve()
                     img.onerror = reject()
-                    images.push(img)
+                    imageArray.push(img)
                 }
             )
         })
@@ -57,31 +66,36 @@ function App() {
         ctx.drawImage(backgroundPhoto, 0, drawY, drawWidth, drawHeight)
         
         // Top bar with distance, time etc
-        ctx.drawImage(images[0], 620, 20)
+        ctx.drawImage(uiImages[0], 620, 20)
         ctx.fillStyle = "#fff";
         
         // Power box
-        ctx.drawImage(images[1], 20, 20)
+        ctx.drawImage(uiImages[1], 20, 20)
         ctx.fillStyle = "#fff";
         ctx.font = canvasFont(105)
         ctx.textAlign = 'right';
         ctx.fillText(Math.min(Math.abs(watts), 9999), 278, 125)
         
         // Power up
-        ctx.drawImage(images[7], 320, 30)
-
-        // Made with
-        ctx.drawImage(images[3], 22, 990)
+        if (powerup != '') {
+            ctx.drawImage(puImages[parseInt(powerup)], 320, 30)
+        }
         
         if (route) {
             // Route badge box
-            ctx.drawImage(images[2], 0, 700)
+            ctx.drawImage(uiImages[2], 0, 710)
             ctx.textAlign = 'right';
             ctx.font = canvasFont(70)
             ctx.fillStyle = "#fff";
-            ctx.fillText(route, 1547, 930)
+            ctx.fillText(route, 1547, 940)
             ctx.fillStyle = "#000";
-            ctx.fillText(route, 1545, 928)
+            ctx.fillText(route, 1545, 938)
+            
+            // Made with (above route banner)
+            ctx.drawImage(uiImages[3], 25, 640)
+        } else {
+            // Made with (bottom)
+            ctx.drawImage(uiImages[3], 25, 990)
         }
 
         setComposition(canvas.toDataURL())
@@ -123,10 +137,18 @@ function App() {
         setWatts(value)
     }
     
+    function onPowerupChanged(value) {
+        setPowerup(value)
+    }
+    
     function onFormSubmit(e) {
         e.preventDefault()
         composeImage(photo)
     }
+
+    const powerupOptions = powerupList.map((description, index) =>
+        <option value={index.toString()}>{description}</option>
+    );
     
     return (
         <div className="">
@@ -151,6 +173,13 @@ function App() {
                             <div className="pl-2 text-white text-lg">Customize!</div>
                         </div>
                         <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
+                            <div>
+                                <span className="text-white pl-8 pr-2">Power-up:</span>
+                                <select id="lang" onChange={(e) => onPowerupChanged(e.target.value)} value={powerup}>
+                                    <option value="">None</option>
+                                    {powerupOptions}
+                                </select>
+                            </div>
                             <div>
                                 <span className="text-white pr-2">Name:</span>
                                 <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
