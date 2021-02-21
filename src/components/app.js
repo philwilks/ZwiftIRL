@@ -24,6 +24,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(true)
     const [photo, setPhoto] = useState(null)
     const [name, setName] = useState('Your name')
+    const [friend, setFriend] = useState('')
     const [route, setRoute] = useState('')
     const [watts, setWatts] = useState(randomWatts())
     const [powerup, setPowerup] = useState('')
@@ -129,6 +130,10 @@ function App() {
         setName(value)
     }
     
+    function onFriendChanged(value) {
+        setFriend(value)
+    }
+    
     function onRouteChanged(value) {
         setRoute(value)
     }
@@ -183,7 +188,7 @@ function App() {
                             <div>
                                 <span className="text-white pl-8 pr-2">Route badge:</span>
                                 <input type="text" value={route} onChange={(e) => onRouteChanged(e.target.value)}
-                                       className="bg-gray-700 text-white p-1 rounded"/>
+                                       className="bg-gray-700 text-white p-1 rounded placeholder-gray-500" placeholder="Make up a route!"/>
                             </div>
                             <div>
                                 <span className="text-white pl-8 pr-2">Watts:</span>
@@ -200,8 +205,8 @@ function App() {
                             </div>
                             <div>
                                 <span className="text-white pl-8 pr-2">Friend name:</span>
-                                <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
-                                       className="bg-gray-700 text-white p-1 rounded"/>
+                                <input type="text" value={friend} onChange={(e) => onFriendChanged(e.target.value)} placeholder="With someone?"
+                                       className="bg-gray-700 text-white p-1 rounded placeholder-gray-500"/>
                             </div>
                         </div>
                         <div className="">
