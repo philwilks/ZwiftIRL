@@ -11,6 +11,7 @@ Blog posts, references and tutorials that might be useful in making this...
 + [React hooks with canvas](https://blog.koenvangilst.nl/react-hooks-with-canvas/)
 + [JS fiddle for downloading canvas as image](https://jsfiddle.net/user2314737/28wqq1gu/)
 + [How to upload image into HTML5 canvas](https://stackoverflow.com/questions/10906734/how-to-upload-image-into-html5-canvas)
++ [Using custom fonts on the canvas](https://stackoverflow.com/questions/2756575/drawing-text-to-canvas-with-font-face-does-not-work-at-the-first-time)
 
 
 ## Running this project

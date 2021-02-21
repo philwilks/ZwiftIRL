@@ -6,7 +6,7 @@ module.exports = {
     darkMode: false, // or 'media' or 'class'
     theme: {
         fontFamily: {
-            'sans': ['Cairo', 'sans-serif']
+            'sans': ['Kanit', 'sans-serif']
         },
         extend: {
             width: {

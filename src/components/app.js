@@ -25,7 +25,7 @@ function App() {
         ctx.drawImage(backgroundPhoto, 0, drawY, drawWidth, drawHeight)
 
         ctx.fillStyle = "#fff";
-        ctx.font = '48px sans-serif'
+        ctx.font = '800 48px Kanit'         // Pretty similar to the Zwift font https://fonts.google.com/specimen/Kanit
         ctx.fillText(Math.min(Math.abs(watts), 9999) + 'w', 10, 50)
         ctx.fillText(name, 10, 250)
 
@@ -77,7 +77,7 @@ function App() {
             <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
                 <div className="flex items-center">
                     <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">1</div>
-                    <div className="pl-2 text-white font-semibold text-lg">Add a photo:</div>
+                    <div className="pl-2 text-white text-lg">Add a photo:</div>
                     <div className="pl-2">
                         <input type="file" onChange={(e) => readImageUpload(e)} />
                     </div>
@@ -87,7 +87,7 @@ function App() {
                 <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
                     <div className="flex items-center pb-3 border-b border-gray-600 mb-3">
                         <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">2</div>
-                        <div className="pl-2 text-white font-semibold text-lg">Customize!</div>
+                        <div className="pl-2 text-white text-lg">Customize!</div>
                     </div>
                     <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
                         <div>
@@ -128,7 +128,7 @@ function App() {
                 <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
                     <div className="flex items-center">
                         <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">3</div>
-                        <div className="pl-2 text-white font-semibold text-lg">Save or copy the image, post it with your real life Strava ride, or whatever. </div> 
+                        <div className="pl-2 text-white text-lg">Save or copy the image, post it with your real life Strava ride, or whatever. </div> 
                     </div>
                 </div>
             }
