@@ -5,7 +5,8 @@ import powerBgUrl from '../images/power.png';
 import routeBgUrl from '../images/route.png';
 import madeWithUrl from '../images/madewith.png';
 import mapUrl from '../images/map.png';
-import ridersUrl from '../images/madewith.png';
+import riders1Url from '../images/riders1.png';
+import riders2Url from '../images/riders2.png';
 
 import featherUrl from '../images/feather.png';
 import aeroUrl from '../images/aero.png';
@@ -15,7 +16,7 @@ import tailwindUrl from '../images/tailwind.png';
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
-    const uiImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, mapUrl, ridersUrl]
+    const uiImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, mapUrl, riders1Url, riders2Url]
     const puImageUrls = [featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl]
     const uiImages = []
     const puImages = []
@@ -23,7 +24,7 @@ function App() {
     
     const [isLoading, setIsLoading] = useState(true)
     const [photo, setPhoto] = useState(null)
-    const [name, setName] = useState('Your name')
+    const [name, setName] = useState('')
     const [friend, setFriend] = useState('')
     const [route, setRoute] = useState('')
     const [watts, setWatts] = useState(randomWatts())
@@ -87,6 +88,16 @@ function App() {
         // Made with
         ctx.drawImage(uiImages[3], 25, 990)
         
+        // Riders
+        ctx.drawImage(uiImages[friend ? 6 : 5], 1563, 340)
+        ctx.font = canvasFont(24)
+        ctx.textAlign = 'right';
+        ctx.fillText(name ? name : 'Zwift IRL', 1842, 600)
+        if (friend) {
+            ctx.fillText(friend, 1842, 553)            
+        }
+        
+        
         if (route) {
             // Route badge box
             ctx.drawImage(uiImages[2], 0, 650)
@@ -96,9 +107,8 @@ function App() {
             ctx.fillText(route, 1547, 880)
             ctx.fillStyle = "#000";
             ctx.fillText(route, 1545, 878)
-        } else {
         }
-
+        
         setComposition(canvas.toDataURL())
     }
 
@@ -199,9 +209,9 @@ function App() {
                         </div>
                         <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
                             <div>
-                                <span className="text-white pr-2">Name:</span>
-                                <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
-                                       className="bg-gray-700 text-white p-1 rounded"/>
+                                <span className="text-white pr-2">Your name:</span>
+                                <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)} placeholder="Add your name"
+                                       className="bg-gray-700 text-white p-1 rounded placeholder-gray-500"/>
                             </div>
                             <div>
                                 <span className="text-white pl-8 pr-2">Friend name:</span>
