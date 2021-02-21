@@ -3,18 +3,10 @@ import logo from './logo.svg';
 function App() {
   return (
     <div className="">
-        <img src={logo} className="w-12" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div className="bg-orange p-4 text-center">
+            <h1 className="text-4xl font-semibold text-white">Zwift IRL</h1>
+            <p className="pt-2">Ride on Zwift while you're riding outside.</p>
+        </div>
     </div>
   );
 }
