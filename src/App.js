@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
+
 function App() {
     const canvasSize = { width: 800, height: 450 }
     
@@ -9,9 +10,26 @@ function App() {
     useEffect(() => {
         const canvas = canvasRef.current
         const ctx = canvas.getContext('2d')
-        ctx.clearRect(0, 0, canvasSize.height, canvasSize.width)
-        
+        ctx.clearRect(0, 0, canvasSize.width, canvasSize.height)     
+        if (photo) {
+            ctx.drawImage(photo, 0, 0, canvasSize.width, canvasSize.height);
+        }
     })
+
+    function readImage(e) {
+        const target = e.target;
+        if (target.files && target.files[0] ) {
+            const FR = new FileReader();
+            FR.onload = function(progress) {
+                const img = new Image();
+                img.src = progress.target.result;
+                img.onload = function() {
+                    setPhoto(img)
+                };                
+            };
+            FR.readAsDataURL(target.files[0] );
+        }
+    }
 
     return (
         <div className="">
@@ -20,7 +38,7 @@ function App() {
                 <p className="pt-2">Ride on Zwift while you're riding outside.</p>
             </div>
             <div className="bg-gray-700">
-                
+                <input type="file" onChange={(e) => readImage(e)} />
             </div>
             <div className="bg-gray-800">
                 <canvas
