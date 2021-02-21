@@ -3,22 +3,28 @@ import React, { useState, useEffect } from 'react'
 import distanceBgUrl from '../images/distance.png';
 import powerBgUrl from '../images/power.png';
 import routeBgUrl from '../images/route.png';
+import madeWithUrl from '../images/madewith.png';
+import featherUrl from '../images/feather.png';
+import aeroUrl from '../images/aero.png';
+import sunUrl from '../images/sun.png';
+import coffeeUrl from '../images/coffee.png';
+import tailwindUrl from '../images/tailwind.png';
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
-    const backgroundImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl]
-    const backgroundImages = []
+    const imageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl]
+    const images = []
     
     const [isLoading, setIsLoading] = useState(true)
     const [photo, setPhoto] = useState(null)
-    const [name, setName] = useState('Tom Pidcock')
+    const [name, setName] = useState('Your name')
     const [route, setRoute] = useState('')
     const [watts, setWatts] = useState(randomWatts())
     
     const [composition, setComposition] = useState(null)
 
     useEffect(() => {        
-        preloadImages(backgroundImageUrls).then(r => {})
+        preloadImages(imageUrls).then(r => {})
     })
     
     const preloadImages = async (srcArray) => {
@@ -28,7 +34,7 @@ function App() {
                     img.src = src
                     img.onload = resolve()
                     img.onerror = reject()
-                    backgroundImages.push(img)
+                    images.push(img)
                 }
             )
         })
@@ -51,22 +57,25 @@ function App() {
         ctx.drawImage(backgroundPhoto, 0, drawY, drawWidth, drawHeight)
         
         // Top bar with distance, time etc
-        ctx.drawImage(backgroundImages[0], 600, 20)
+        ctx.drawImage(images[0], 620, 20)
         ctx.fillStyle = "#fff";
         
         // Power box
-        ctx.drawImage(backgroundImages[1], 20, 20)
+        ctx.drawImage(images[1], 20, 20)
         ctx.fillStyle = "#fff";
-        ctx.font = canvasFont(110)
+        ctx.font = canvasFont(105)
         ctx.textAlign = 'right';
-        ctx.fillText(Math.min(Math.abs(watts), 9999), 288, 130)
+        ctx.fillText(Math.min(Math.abs(watts), 9999), 278, 125)
         
-                
-        // ctx.fillText(name, 10, 250)
+        // Power up
+        ctx.drawImage(images[7], 320, 30)
 
+        // Made with
+        ctx.drawImage(images[3], 22, 990)
+        
         if (route) {
             // Route badge box
-            ctx.drawImage(backgroundImages[2], 0, 700)
+            ctx.drawImage(images[2], 0, 700)
             ctx.textAlign = 'right';
             ctx.font = canvasFont(70)
             ctx.fillStyle = "#fff";
@@ -143,7 +152,7 @@ function App() {
                         </div>
                         <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
                             <div>
-                                <span className="text-white pr-2">Your name:</span>
+                                <span className="text-white pr-2">Name:</span>
                                 <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
                                        className="bg-gray-700 text-white p-1 rounded"/>
                             </div>
