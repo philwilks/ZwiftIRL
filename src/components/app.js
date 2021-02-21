@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 
 import distanceBgUrl from '../images/distance.png';
 import powerBgUrl from '../images/power.png';
+import routeBgUrl from '../images/route.png';
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
-    const backgroundImageUrls = [distanceBgUrl, powerBgUrl]
+    const backgroundImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl]
     const backgroundImages = []
     
     const [isLoading, setIsLoading] = useState(true)
@@ -52,14 +53,11 @@ function App() {
         // Top bar with distance, time etc
         ctx.drawImage(backgroundImages[0], 600, 20)
         ctx.fillStyle = "#fff";
-        ctx.font = '700 48px Kanit'
         
         // Power box
-        const powerBg = new Image()
-        powerBg.src = powerBgUrl
         ctx.drawImage(backgroundImages[1], 20, 20)
         ctx.fillStyle = "#fff";
-        ctx.font = '700 110px Kanit'
+        ctx.font = canvasFont(110)
         ctx.textAlign = 'right';
         ctx.fillText(Math.min(Math.abs(watts), 9999), 282, 130)
         
@@ -67,7 +65,14 @@ function App() {
         // ctx.fillText(name, 10, 250)
 
         if (route) {
-            ctx.fillText(route, 10, 150)
+            // Route badge box
+            ctx.drawImage(backgroundImages[2], 0, 700)
+            ctx.textAlign = 'right';
+            ctx.font = canvasFont(70)
+            ctx.fillStyle = "#fff";
+            ctx.fillText(route, 1547, 930)
+            ctx.fillStyle = "#000";
+            ctx.fillText(route, 1545, 928)
         }
 
         setComposition(canvas.toDataURL())
@@ -87,6 +92,10 @@ function App() {
             };
             FR.readAsDataURL(target.files[0])
         }
+    }
+    
+    function canvasFont(size) {
+        return '700 ' + size + 'px Kanit'
     }
 
     function randomWatts() {
@@ -108,7 +117,7 @@ function App() {
     return (
         <div className="">
             <div className="bg-orange p-4 text-center mb-8">
-                <h1 className="text-4xl font-semibold text-white">Zwift IRL</h1>
+                <h1 className="text-4xl font-bold text-white">Zwift IRL</h1>
                 <p className="pt-2">Zwift, but in real life. For posting on Strava, Instagram etc.</p>
             </div>
             <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
@@ -174,7 +183,7 @@ function App() {
                 isLoading &&
                 <div className="text-center text-gray-500 pt-4">Loading...</div>
             }
-            <div className="font-bold">&nbsp;</div>
+            <div style={{fontFamily: 'Kanit', fontWeight: 700}}>&nbsp;</div>
         </div>
     )
 }
