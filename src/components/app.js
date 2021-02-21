@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 
+import Toggle from './toggle'
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
     
     const [photo, setPhoto] = useState(null)
     const [watts, setWatts] = useState(randomWatts())
+    const [route, setRoute] = useState('')
+    
     const canvasRef = useRef(null)
 
     useEffect(() => {
@@ -22,6 +25,7 @@ function App() {
             ctx.fillStyle = "#fff";
             ctx.font = '48px sans-serif'
             ctx.fillText(watts + 'w', 10, 50)
+            ctx.fillText(route, 10, 150)
         }
     })
 
@@ -44,6 +48,10 @@ function App() {
         return 100 + Math.floor(Math.random() * Math.floor(200))
     }
 
+    function onRouteBadgeToggle(checked) {
+        setRoute(checked ? 'My route' : '')
+    }
+
     return (
         <div className="">
             <div className="bg-orange p-4 text-center mb-8">
@@ -63,6 +71,9 @@ function App() {
                 <div className="flex items-center">
                     <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">2</div>
                     <div className="pl-2 text-white font-semibold text-lg">Customize!</div>
+                </div>
+                <div>
+                    <Toggle text="Route badge" onChange={onRouteBadgeToggle} />
                 </div>
             </div>
             {(photo) ?

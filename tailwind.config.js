@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
     purge: [],
     // purge: ['./src/**/*.{js,jsx}', './public/index.html'],
@@ -12,6 +14,7 @@ module.exports = {
             },
             colors: {
                 orange: '#fc6719',   // Zwift orange
+                green: colors.lime,
             }
         }
     },
