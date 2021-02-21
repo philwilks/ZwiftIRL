@@ -38,12 +38,12 @@ function App() {
         <div className="">
             <div className="bg-orange p-4 text-center">
                 <h1 className="text-4xl font-semibold text-white">Zwift IRL</h1>
-                <p className="pt-2">Ride on Zwift while you're riding outside.</p>
+                <p className="pt-2">Zwift, but in real life. For posting on Strava, Instagram etc.</p>
             </div>
-            <div className="bg-gray-700">
+            <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
                 <input type="file" onChange={(e) => readImage(e)} />
             </div>
-            <div className="bg-gray-800">
+            <div className="bg-gray-800 mx-auto w-800">
                 <canvas
                     ref={canvasRef}
                     width={canvasSize.width}

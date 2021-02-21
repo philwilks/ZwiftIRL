@@ -7,6 +7,9 @@ module.exports = {
             'sans': ['Cairo', 'sans-serif']
         },
         extend: {
+            width: {
+                '800': '800px'
+            },
             colors: {
                 orange: '#fc6719',   // Zwift orange
             }
