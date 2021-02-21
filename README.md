@@ -2,6 +2,13 @@
 
 Upload your real-life photo and add the [Zwift](https://www.zwift.com) user interface over the top!
 
+## Reading list
+
+Blog posts, references and tutorials that might be useful in making this...
+
++ [React hooks with canvas](https://blog.koenvangilst.nl/react-hooks-with-canvas/)
++ [JS fiddle for downloading canvas as image](https://jsfiddle.net/user2314737/28wqq1gu/)
+
 
 ## Running this project
 
