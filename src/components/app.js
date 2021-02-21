@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import Toggle from './toggle'
-
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
     
     const [photo, setPhoto] = useState(null)
-    const [watts, setWatts] = useState(randomWatts())
+    const [name, setName] = useState('Tom Pidcock')
     const [route, setRoute] = useState('')
+    const [watts, setWatts] = useState(randomWatts())
+    
+    const [composition, setComposition] = useState(null)
     
     const canvasRef = useRef(null)
 
@@ -24,8 +25,14 @@ function App() {
 
             ctx.fillStyle = "#fff";
             ctx.font = '48px sans-serif'
-            ctx.fillText(watts + 'w', 10, 50)
-            ctx.fillText(route, 10, 150)
+            ctx.fillText(Math.min(Math.abs(watts), 9999) + 'w', 10, 50)
+            ctx.fillText(name, 10, 250)
+            
+            if (route) {
+                ctx.fillText(route, 10, 150)
+            }
+
+            setComposition(canvas.toDataURL())
         }
     })
 
@@ -48,8 +55,16 @@ function App() {
         return 100 + Math.floor(Math.random() * Math.floor(200))
     }
 
-    function onRouteBadgeToggle(checked) {
-        setRoute(checked ? 'My route' : '')
+    function onNameChanged(value) {
+        setName(value)
+    }
+    
+    function onRouteChanged(value) {
+        setRoute(value)
+    }
+    
+    function onWattsChanged(value) {
+        setWatts(value)
     }
 
     return (
@@ -68,12 +83,23 @@ function App() {
                 </div>
             </div>
             <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
-                <div className="flex items-center">
+                <div className="flex items-center pb-3 border-b border-gray-600 mb-3">
                     <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">2</div>
                     <div className="pl-2 text-white font-semibold text-lg">Customize!</div>
                 </div>
-                <div>
-                    <Toggle text="Route badge" onChange={onRouteBadgeToggle} />
+                <div className="pb-2 flex">
+                    <div>
+                        <span className="text-white pr-2">Your name:</span>
+                        <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)} className="bg-gray-700 text-white p-1 rounded" />
+                    </div>
+                    <div>
+                        <span className="text-white pl-8 pr-2">Route badge:</span>                    
+                        <input type="text" value={route} onChange={(e) => onRouteChanged(e.target.value)} className="bg-gray-700 text-white p-1 rounded" />
+                    </div>
+                    <div>
+                        <span className="text-white pl-8 pr-2">Watts:</span> 
+                        <input type="number" min="0" max="2000" step="10" value={watts} onChange={(e) => onWattsChanged(e.target.value)} className="bg-gray-700 text-white p-1 rounded" />
+                    </div>
                 </div>
             </div>
             {(photo) ?
@@ -82,8 +108,11 @@ function App() {
                         ref={canvasRef}
                         width={canvasSize.width}
                         height={canvasSize.height}
-                        className="w-800"
+                        className="hidden"
                     />
+                    {composition && 
+                        <img src={composition} alt="Copy me" />
+                    }
                 </div>
                 :
                 <div className="bg-gray-800 mx-auto w-800 text-white text-center mt-10 text-lg">
