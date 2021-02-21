@@ -36,12 +36,24 @@ function App() {
 
     return (
         <div className="">
-            <div className="bg-orange p-4 text-center">
+            <div className="bg-orange p-4 text-center mb-8">
                 <h1 className="text-4xl font-semibold text-white">Zwift IRL</h1>
                 <p className="pt-2">Zwift, but in real life. For posting on Strava, Instagram etc.</p>
             </div>
             <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
-                <input type="file" onChange={(e) => readImage(e)} />
+                <div className="flex items-center">
+                    <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">1</div>
+                    <div className="pl-2 text-white font-semibold text-lg">Pick a photo:</div>
+                    <div className="pl-2">
+                        <input type="file" onChange={(e) => readImage(e)} />
+                    </div>
+                </div>
+            </div>
+            <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
+                <div className="flex items-center">
+                    <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">2</div>
+                    <div className="pl-2 text-white font-semibold text-lg">Customize!</div>
+                </div>
             </div>
             <div className="bg-gray-800 mx-auto w-800">
                 <canvas
