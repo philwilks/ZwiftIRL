@@ -4,9 +4,8 @@ import distanceBgUrl from '../images/distance.png';
 import powerBgUrl from '../images/power.png';
 import routeBgUrl from '../images/route.png';
 import madeWithUrl from '../images/madewith.png';
-import mapUrl from '../images/madewith.png';
+import mapUrl from '../images/map.png';
 import ridersUrl from '../images/madewith.png';
-import spareUrl from '../images/madewith.png';
 
 import featherUrl from '../images/feather.png';
 import aeroUrl from '../images/aero.png';
@@ -16,7 +15,7 @@ import tailwindUrl from '../images/tailwind.png';
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
-    const uiImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, mapUrl, ridersUrl, spareUrl]
+    const uiImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, mapUrl, ridersUrl]
     const puImageUrls = [featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl]
     const uiImages = []
     const puImages = []
@@ -80,22 +79,23 @@ function App() {
         if (powerup != '') {
             ctx.drawImage(puImages[parseInt(powerup)], 320, 30)
         }
+
+        // Map
+        ctx.drawImage(uiImages[4], 1454, 24)
+        
+        // Made with
+        ctx.drawImage(uiImages[3], 25, 990)
         
         if (route) {
             // Route badge box
-            ctx.drawImage(uiImages[2], 0, 710)
+            ctx.drawImage(uiImages[2], 0, 650)
             ctx.textAlign = 'right';
             ctx.font = canvasFont(70)
             ctx.fillStyle = "#fff";
-            ctx.fillText(route, 1547, 940)
+            ctx.fillText(route, 1547, 880)
             ctx.fillStyle = "#000";
-            ctx.fillText(route, 1545, 938)
-            
-            // Made with (above route banner)
-            ctx.drawImage(uiImages[3], 25, 640)
+            ctx.fillText(route, 1545, 878)
         } else {
-            // Made with (bottom)
-            ctx.drawImage(uiImages[3], 25, 990)
         }
 
         setComposition(canvas.toDataURL())
@@ -174,16 +174,11 @@ function App() {
                         </div>
                         <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
                             <div>
-                                <span className="text-white pl-8 pr-2">Power-up:</span>
+                                <span className="text-white pr-2">Power-up:</span>
                                 <select id="lang" onChange={(e) => onPowerupChanged(e.target.value)} value={powerup}>
                                     <option value="">None</option>
                                     {powerupOptions}
                                 </select>
-                            </div>
-                            <div>
-                                <span className="text-white pr-2">Name:</span>
-                                <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
-                                       className="bg-gray-700 text-white p-1 rounded"/>
                             </div>
                             <div>
                                 <span className="text-white pl-8 pr-2">Route badge:</span>
@@ -194,6 +189,18 @@ function App() {
                                 <span className="text-white pl-8 pr-2">Watts:</span>
                                 <input type="number" min="0" max="2000" step="1" value={watts}
                                        onChange={(e) => onWattsChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                        </div>
+                        <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
+                            <div>
+                                <span className="text-white pr-2">Name:</span>
+                                <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                            <div>
+                                <span className="text-white pl-8 pr-2">Friend name:</span>
+                                <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)}
                                        className="bg-gray-700 text-white p-1 rounded"/>
                             </div>
                         </div>
