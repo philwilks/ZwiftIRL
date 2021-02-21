@@ -2,12 +2,15 @@
 
 Upload your real-life photo and add the [Zwift](https://www.zwift.com) user interface over the top!
 
+This is all done in the browser without the need for a server to compose the image. I didn't know this was possible but it turns out HTML Canvas is pretty powerful and well supported.
+
 ## Reading list
 
 Blog posts, references and tutorials that might be useful in making this...
 
 + [React hooks with canvas](https://blog.koenvangilst.nl/react-hooks-with-canvas/)
 + [JS fiddle for downloading canvas as image](https://jsfiddle.net/user2314737/28wqq1gu/)
++ [How to upload image into HTML5 canvas](https://stackoverflow.com/questions/10906734/how-to-upload-image-into-html5-canvas)
 
 
 ## Running this project
