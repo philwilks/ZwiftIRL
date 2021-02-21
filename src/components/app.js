@@ -1,17 +1,41 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
+
+import distanceBgUrl from '../images/distance.png';
+import powerBgUrl from '../images/power.png';
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
+    const backgroundImageUrls = [distanceBgUrl, powerBgUrl]
+    const backgroundImages = []
     
+    const [isLoading, setIsLoading] = useState(true)
     const [photo, setPhoto] = useState(null)
     const [name, setName] = useState('Tom Pidcock')
     const [route, setRoute] = useState('')
     const [watts, setWatts] = useState(randomWatts())
     
     const [composition, setComposition] = useState(null)
-    
-    const canvasRef = useRef(null)
 
+    useEffect(() => {        
+        preloadImages(backgroundImageUrls).then(r => {})
+    })
+    
+    const preloadImages = async (srcArray) => {
+        const promises = await srcArray.map((src) => {
+            return new Promise(function (resolve, reject) {
+                    const img = new Image()
+                    img.src = src
+                    img.onload = resolve()
+                    img.onerror = reject()
+                    backgroundImages.push(img)
+                }
+            )
+        })
+        
+        await Promise.all(promises)
+        setIsLoading(false)
+    }
+    
     function composeImage(backgroundPhoto) {
         const canvas = document.createElement('canvas')
         canvas.width = canvasSize.width
@@ -19,15 +43,28 @@ function App() {
         const ctx = canvas.getContext('2d')
         ctx.clearRect(0, 0, canvasSize.width, canvasSize.height)
 
+        // Background image
         const drawWidth = canvasSize.width
         const drawHeight = drawWidth / backgroundPhoto.width * backgroundPhoto.height
         const drawY = (canvasSize.height - drawHeight) / 2
         ctx.drawImage(backgroundPhoto, 0, drawY, drawWidth, drawHeight)
-
+        
+        // Top bar with distance, time etc
+        ctx.drawImage(backgroundImages[0], 600, 20)
         ctx.fillStyle = "#fff";
-        ctx.font = '800 48px Kanit'         // Pretty similar to the Zwift font https://fonts.google.com/specimen/Kanit
-        ctx.fillText(Math.min(Math.abs(watts), 9999) + 'w', 10, 50)
-        ctx.fillText(name, 10, 250)
+        ctx.font = '700 48px Kanit'
+        
+        // Power box
+        const powerBg = new Image()
+        powerBg.src = powerBgUrl
+        ctx.drawImage(backgroundImages[1], 20, 20)
+        ctx.fillStyle = "#fff";
+        ctx.font = '700 110px Kanit'
+        ctx.textAlign = 'right';
+        ctx.fillText(Math.min(Math.abs(watts), 9999), 282, 130)
+        
+                
+        // ctx.fillText(name, 10, 250)
 
         if (route) {
             ctx.fillText(route, 10, 150)
@@ -117,12 +154,12 @@ function App() {
                     To get started, add a photo of your <strong>real life</strong> ride.
                 </div>
             }
-            {composition &&
+            {
+                composition &&
                 <div className="bg-gray-800 mx-auto w-800">
                     <img src={composition} alt="Copy me" />
                 </div>                
-            }
-            
+            }            
             {
                 composition &&
                 <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
@@ -132,8 +169,14 @@ function App() {
                     </div>
                 </div>
             }
+
+            {
+                isLoading &&
+                <div className="text-center text-gray-500 pt-4">Loading...</div>
+            }
+            <div className="font-bold">&nbsp;</div>
         </div>
-    );
+    )
 }
 
 export default App;
