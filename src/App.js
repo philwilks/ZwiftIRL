@@ -12,7 +12,10 @@ function App() {
         const ctx = canvas.getContext('2d')
         ctx.clearRect(0, 0, canvasSize.width, canvasSize.height)     
         if (photo) {
-            ctx.drawImage(photo, 0, 0, canvasSize.width, canvasSize.height);
+            const drawWidth = canvasSize.width;
+            const drawHeight = drawWidth / photo.width * photo.height;
+            const drawY = (canvasSize.height - drawHeight) / 2;
+            ctx.drawImage(photo, 0, drawY, drawWidth, drawHeight);
         }
     })
 
