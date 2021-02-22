@@ -17,14 +17,15 @@ import aeroUrl from '../images/aero.png';
 import sunUrl from '../images/sun.png';
 import coffeeUrl from '../images/coffee.png';
 import tailwindUrl from '../images/tailwind.png';
+import mudUrl from '../images/mud.png';
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
     const uiImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, mapUrl, riders1Url, riders2Url]
-    const puImageUrls = [featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl]
+    const puImageUrls = [featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl, mudUrl]
     const uiImages = []
     const puImages = []
-    const powerupList = ['Feather', 'Aero Boost', 'Vitamin D', 'Coffee Stop', 'Tailwind']
+    const powerupList = ['Feather', 'Aero Boost', 'Vitamin D', 'Coffee Stop', 'Tailwind', 'Mud']
     
     const [isLoading, setIsLoading] = useState(true)
     const [photo, setPhoto] = useState(null)
