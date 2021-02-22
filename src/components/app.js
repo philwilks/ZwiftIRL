@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
+import Header from './header'
+import Footer from './footer'
+
 import distanceBgUrl from '../images/distance.png';
 import powerBgUrl from '../images/power.png';
 import routeBgUrl from '../images/route.png';
@@ -135,25 +138,11 @@ function App() {
         return 100 + Math.floor(Math.random() * Math.floor(200))
     }
 
-    function onNameChanged(value) {
-        setName(value)
-    }
-    
-    function onFriendChanged(value) {
-        setFriend(value)
-    }
-    
-    function onRouteChanged(value) {
-        setRoute(value)
-    }
-    
-    function onWattsChanged(value) {
-        setWatts(value)
-    }
-    
-    function onPowerupChanged(value) {
-        setPowerup(value)
-    }
+    function onNameChanged(value) { setName(value) }    
+    function onFriendChanged(value) { setFriend(value) }    
+    function onRouteChanged(value) { setRoute(value) }    
+    function onWattsChanged(value) { setWatts(value) }    
+    function onPowerupChanged(value) { setPowerup(value) }
         
     function onFormSubmit(e) {
         e.preventDefault()
@@ -166,10 +155,7 @@ function App() {
     
     return (
         <div className="">
-            <div className="bg-orange p-4 text-center mb-8">
-                <h1 className="text-4xl font-bold text-white">Zwift IRL</h1>
-                <p className="pt-2">Zwift, but in real life. For posting on Strava, Instagram etc.</p>
-            </div>
+            <Header />
             <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
                 <div className="flex items-center">
                     <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">1</div>
@@ -225,30 +211,33 @@ function App() {
                 </div>
                 :
                 <div className="bg-gray-800 mx-auto w-800 text-white text-center mt-10 text-lg">
-                    To get started, add a photo of your <strong>real life</strong> ride.
+                    To get started, add a photo of your real life ride.
                 </div>
             }
             {
                 composition &&
-                <div className="bg-gray-800 mx-auto w-800">
-                    <img src={composition} />
-                </div>                
-            }            
-            {
-                composition &&
-                <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
-                    <div className="flex items-center">
-                        <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">3</div>
-                        <div className="pl-2 text-white text-lg">Save or copy the image, post it with your real life Strava ride, or whatever. </div> 
+                <>
+                    <div className="bg-gray-800 mx-auto w-800">
+                        <img src={composition} />
+                        // No alt tag as otherwise some browsers will offer to copy it
+                    </div>      
+    
+                    <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
+                        <div className="flex items-center">
+                            <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">3</div>
+                            <div className="pl-2 text-white text-lg">Save or copy the image, post it with your real life Strava ride, or whatever. </div> 
+                        </div>
                     </div>
-                </div>
+                    
+                </>
             }
-
             {
                 isLoading &&
                 <div className="text-center text-gray-500 pt-4">Loading...</div>
             }
+            
             <div style={{fontFamily: 'Kanit', fontWeight: 700}}>&nbsp;</div>
+            <Footer />
         </div>
     )
 }

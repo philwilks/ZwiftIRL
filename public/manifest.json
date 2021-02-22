@@ -1,6 +1,6 @@
 {
   "short_name": "ZwiftIRL",
-  "name": "Zwift in real life",
+  "name": "Zwift in Real Life",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#fc6719",
+  "background_color": "#374151"
 }
