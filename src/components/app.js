@@ -108,7 +108,7 @@ function App() {
             ctx.fillText(route, 1545, 878)
         }
         
-        setComposition(canvas.toDataURL())
+        setComposition(canvas.toDataURL('image/jpeg', 0.95))
     }
 
     function readImageUpload(e) {
@@ -161,7 +161,7 @@ function App() {
     }
 
     const powerupOptions = powerupList.map((description, index) =>
-        <option value={index.toString()}>{description}</option>
+        <option value={index.toString()} key={index}>{description}</option>
     );
     
     return (
