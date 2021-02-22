@@ -223,14 +223,14 @@ function App() {
                     </div>      
     
                     <div className="bg-gray-500 max-w-3xl md:rounded mx-auto my-4 p-4">
-                        <div className="flex items-center pb-3 border-b border-gray-600 mb-2">
+                        <div className="flex items-center">
                             <div className="flex-none bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">3</div>
                             <div className="pl-2 text-white md:text-lg">Save or copy the image above. If this doesn't work for you, <a href={composition} download="ZwiftIRL.jpg" className="text-orange font-semibold">download it here</a> instead.</div> 
                         </div>  
                     </div>
 
                     <div className="text-gray-300 text-center px-4 mt-8">
-                        <p><strong>Tip:</strong> To put a flag after your name, add an emoji.</p>
+                        <p><strong>Tip:</strong> To put a flag after your name, add an emoji 👋</p>
                     </div>
                 </>
             }
