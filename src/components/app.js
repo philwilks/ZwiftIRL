@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import Header from './header'
+import Label from './label'
 import Footer from './footer'
 
 import distanceBgUrl from '../images/distance.png';
@@ -154,52 +155,52 @@ function App() {
     );
     
     return (
-        <div className="">
+        <>
             <Header />
-            <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
+            <div className="bg-gray-500 max-w-3xl md:rounded mx-auto my-4 p-4">
                 <div className="flex items-center">
-                    <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">1</div>
-                    <div className="pl-2 text-white text-lg">Add a photo:</div>
-                    <div className="pl-2">
+                    <div className="flex-none bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">1</div>
+                    <div className="flex-none pl-2 text-white md:text-lg">Add a photo:</div>
+                    <div className="pl-2 overflow-hidden max-w-2xl">
                         <input type="file" onChange={(e) => readImageUpload(e)} />
                     </div>
                 </div>
             </div>
             {photo ?
-                <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
+                <div className="bg-gray-500 max-w-3xl md:rounded mx-auto my-4 p-4">
                     <form onSubmit={(e) => onFormSubmit(e)}>
-                        <div className="flex items-center pb-3 border-b border-gray-600 mb-3">
+                        <div className="flex items-center pb-3 border-b border-gray-600 mb-2">
                             <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">2</div>
-                            <div className="pl-2 text-white text-lg">Customize!</div>
+                            <div className="pl-2 text-white md:text-lg">Customize!</div>
                         </div>
-                        <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
-                            <div>
-                                <span className="text-white pr-2">Power-up:</span>
+                        <div className="md:flex md:border-b border-gray-600 md:mb-2">
+                            <div className="pr-6 mb-2">
+                                <Label>Power-up:</Label>
                                 <select id="lang" onChange={(e) => onPowerupChanged(e.target.value)} value={powerup}>
                                     <option value="">None</option>
                                     {powerupOptions}
                                 </select>
                             </div>
-                            <div>
-                                <span className="text-white pl-8 pr-2">Route badge:</span>
+                            <div className="pr-6 mb-2">
+                                <Label>Route badge:</Label>
                                 <input type="text" value={route} onChange={(e) => onRouteChanged(e.target.value)}
                                        className="bg-gray-700 text-white p-1 rounded placeholder-gray-500" placeholder="Make up a route!"/>
                             </div>
-                            <div>
-                                <span className="text-white pl-8 pr-2">Watts:</span>
+                            <div className="pr-6 mb-2">
+                                <Label>Watts:</Label>
                                 <input type="number" min="0" max="2000" step="1" value={watts}
                                        onChange={(e) => onWattsChanged(e.target.value)}
                                        className="bg-gray-700 text-white p-1 rounded"/>
                             </div>
                         </div>
-                        <div className="pb-2 flex pb-3 border-b border-gray-600 mb-3">
-                            <div>
-                                <span className="text-white pr-2">Your name:</span>
+                        <div className="md:flex border-b border-gray-600 mb-3">
+                            <div className="pr-6 mb-2">
+                                <Label>Your name:</Label>
                                 <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)} placeholder="Add your name"
                                        className="bg-gray-700 text-white p-1 rounded placeholder-gray-500"/>
                             </div>                            
-                            <div>
-                                <span className="text-white pl-8 pr-2">Friend name:</span>
+                            <div className="pr-6 mb-2">
+                                <Label>Friend name:</Label>
                                 <input type="text" value={friend} onChange={(e) => onFriendChanged(e.target.value)} placeholder="With someone?"
                                        className="bg-gray-700 text-white p-1 rounded placeholder-gray-500"/>
                             </div>
@@ -210,22 +211,21 @@ function App() {
                     </form>
                 </div>
                 :
-                <div className="bg-gray-800 mx-auto w-800 text-white text-center mt-10 text-lg">
+                <div className="bg-gray-800 mx-auto text-white text-center mt-10 text-lg mb-32 px-12">
                     To get started, add a photo of your real life ride.
                 </div>
             }
             {
                 composition &&
                 <>
-                    <div className="bg-gray-800 mx-auto w-800">
+                    <div className="bg-gray-800 mx-auto max-w-6xl">
                         <img src={composition} />
-                        // No alt tag as otherwise some browsers will offer to copy it
                     </div>      
     
-                    <div className="bg-gray-500 rounded mx-auto my-4 w-800 p-4">
+                    <div className="bg-gray-500 max-w-3xl md:rounded mx-auto my-4 p-4">
                         <div className="flex items-center">
-                            <div className="bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">3</div>
-                            <div className="pl-2 text-white text-lg">Save or copy the image, post it with your real life Strava ride, or whatever. </div> 
+                            <div className="flex-none bg-orange text-white font-bold w-8 h-8 rounded-full text-center pt-1">3</div>
+                            <div className="pl-2 text-white md:text-lg">Save or copy the image, post it with your real life Strava ride, or whatever. </div> 
                         </div>
                     </div>
                     
@@ -238,7 +238,7 @@ function App() {
             
             <div style={{fontFamily: 'Kanit', fontWeight: 700}}>&nbsp;</div>
             <Footer />
-        </div>
+        </>
     )
 }
 

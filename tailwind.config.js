@@ -1,7 +1,6 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-    // purge: [],
     purge: ['./src/**/*.{js,jsx}', './public/index.html'],
     darkMode: false, // or 'media' or 'class'
     theme: {
@@ -9,9 +8,6 @@ module.exports = {
             'sans': ['Cairo', 'sans-serif']
         },
         extend: {
-            width: {
-                '800': '800px'
-            },
             colors: {
                 orange: '#fc6719',   // Zwift orange
                 green: colors.lime,
