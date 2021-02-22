@@ -17,7 +17,6 @@ function Footer(props) {
                     <i className="fab fa-strava text-lg pr-1"></i>
                     Strava
                 </a>
-                
             </p>
         </div>
     );
