@@ -25,7 +25,7 @@ function App() {
     
     useEffect(() => {
         setWatts(randomInt(100, 300))
-        setGradient(randomInt(-10, 10))
+        setGradient(randomInt(-2, 9))
         const randomStats = {
             speed: randomInt(20, 45),
             elevation: randomInt(100, 300),
@@ -65,21 +65,21 @@ function App() {
         ctx.textAlign = 'right';
         ctx.font = canvasFont(48)
         
-        ctx.fillStyle = Colors.blue;
+        ctx.fillStyle = Colors.blue
         ctx.fillText(stats.speed.toFixed(0).toString(), 708, 70)
         
-        ctx.fillStyle = Colors.black;
-        ctx.fillText(stats.distance.toFixed(1).toString(), 883, 70)
+        ctx.fillStyle = Colors.black
+        ctx.fillText(stats.distance.toFixed(stats.distance < 100 ? 1 : 0).toString(), 883, 70)
         
-        ctx.fillStyle = Colors.blue;
+        ctx.fillStyle = Colors.blue
         ctx.fillText(stats.elevation.toFixed(0).toString(), 1053, 70)
         
-        ctx.fillStyle = Colors.black;
-        ctx.fillText(stats.hours + ':' + stats.minutes.toString().padStart(2, '0') + ':' + stats.seconds.toString().padStart(2, '0'), 1251, 70)
+        ctx.fillStyle = Colors.black
+        ctx.fillText((stats.hours > 0 ? stats.hours + ':' : '') + stats.minutes.toString().padStart(2, '0') + ':' + stats.seconds.toString().padStart(2, '0'), 1251, 70)
         
-        // Power box
+        // Watts etc
         ctx.drawImage(Images.power, 20, 20)
-        ctx.fillStyle = Colors.white;
+        ctx.fillStyle = Colors.white
         ctx.font = canvasFont(105)
         ctx.fillText(watts.toString(), 278, 125)
         
@@ -90,6 +90,20 @@ function App() {
 
         // Map
         ctx.drawImage(Images.map, 1454, 24)
+        ctx.font = canvasFont(35 + (gradient > 0 ? Math.min(gradient, 20) * 2 : 0))
+        ctx.strokeStyle = Colors.black
+        ctx.lineWidth = 4
+        ctx.strokeText(gradient.toString(), 1857, 100)
+        if (gradient >= 10) ctx.fillStyle = Colors.grad10plus
+        else if (gradient >= 7) ctx.fillStyle = Colors.grad7to9
+        else if (gradient >= 3) ctx.fillStyle = Colors.grad3to6
+        else ctx.fillStyle = Colors.white;
+        ctx.fillText(gradient.toString(), 1857, 100)
+        
+        ctx.font = canvasFont(25)
+        ctx.lineWidth = 3
+        ctx.strokeText('%', 1880, 100)
+        ctx.fillText('%', 1880, 100)
         
         // Made with
         ctx.drawImage(Images.madeWith, 25, 990)
@@ -97,7 +111,8 @@ function App() {
         // Riders
         ctx.drawImage(friend ? Images.riders2 : Images.riders1, 1563, 340)
         ctx.font = canvasFont(24)
-        ctx.textAlign = 'right';
+        ctx.textAlign = 'right'
+        ctx.fillStyle = Colors.white
         ctx.fillText(name, 1887, 622)
         if (friend) {
             ctx.fillText(friend, 1887, 566)
@@ -106,7 +121,7 @@ function App() {
         if (route) {
             // Route badge box
             ctx.drawImage(Images.route, 0, 650)
-            ctx.textAlign = 'right';
+            ctx.textAlign = 'right'
             ctx.font = canvasFont(70)
             ctx.fillStyle = Colors.white;
             ctx.fillText(route, 1547, 880)
@@ -146,13 +161,15 @@ function App() {
     function onRouteChanged(value) { setRoute(value) }     
     function onPowerupChanged(value) { setPowerup(parseInt(value)) }
     
-    function onWattsChanged(value) { setWatts(value) }
-    function onDistanceChanged(value) { setStats( { ...stats, distance: value }) }
-    function onSpeedChanged(value) { setStats( { ...stats, speed: value }) }
-    function onElevationChanged(value) { setStats( { ...stats, elevation: value }) }
-    function onHoursChanged(value) { setStats( { ...stats, hours: value }) }
-    function onMinutesChanged(value) { setStats( { ...stats, minutes: value }) }
-    function onSecondsChanged(value) { setStats( { ...stats, seconds: value }) }
+    function onWattsChanged(value) { setWatts(parseInt(value)) }
+    function onGradientChanged(value) { setGradient(parseInt(value)) }
+    
+    function onDistanceChanged(value) { setStats( { ...stats, distance: parseFloat(value) }) }
+    function onSpeedChanged(value) { setStats( { ...stats, speed: parseInt(value) }) }
+    function onElevationChanged(value) { setStats( { ...stats, elevation: parseInt(value) }) }
+    function onHoursChanged(value) { setStats( { ...stats, hours: parseInt(value) }) }
+    function onMinutesChanged(value) { setStats( { ...stats, minutes: parseInt(value) }) }
+    function onSecondsChanged(value) { setStats( { ...stats, seconds: parseInt(value) }) }
 
     function onFormSubmit(e) {
         e.preventDefault()
@@ -164,6 +181,11 @@ function App() {
         setShowAdvanced(!showAdvanced)
     }
 
+    function onCalculateSpeedClick(e) {
+        e.preventDefault()
+        setStats({ ...stats, speed: calculateSpeed(stats) })
+    }
+    
     const powerupOptions = PowerUps.map((powerUp, index) =>
         <option value={index.toString()} key={index}>{powerUp.name}</option>
     );
@@ -201,7 +223,7 @@ function App() {
                                        className="bg-gray-700 text-white p-1 rounded placeholder-gray-500" placeholder="Make up a route!"/>
                             </div>
                         </div>
-                        <div className="md:flex border-b border-gray-600 mb-3">
+                        <div className="md:flex border-b border-gray-600 mb-2">
                             <div className="pr-6 mb-2">
                                 <Label>Your name:</Label>
                                 <input type="text" value={name} onChange={(e) => onNameChanged(e.target.value)} placeholder="Add your name"
@@ -215,39 +237,49 @@ function App() {
                         </div>
                         { showAdvanced && 
                             <>
-                                <div className="md:flex md:border-b border-gray-600 md:mb-2">                                   
+                                <div className="md:flex md:border-b border-gray-600 md:mb-2">
                                     <div className="pr-6 mb-2">
-                                        <Label>Watts:</Label>
+                                        <Label>Power:</Label>
                                         <input type="number" min="0" max="9999" step="1" value={watts}
                                                onChange={(e) => onWattsChanged(e.target.value)}
-                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-14"/>
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-16"/>
                                     </div>
+                                    <div className="pr-6 mb-2">
+                                        <Label>Gradient:</Label>
+                                        <input type="number" min="-100" max="100" step="1" value={gradient}
+                                               onChange={(e) => onGradientChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-16"/>
+                                    </div>
+                                </div>
+                                <div className="md:flex md:border-b border-gray-600 md:mb-2">  
                                     <div className="pr-6 mb-2">
                                         <Label>Speed:</Label>
                                         <input type="number" min="0" max="200" step="1" value={stats.speed}
                                                onChange={(e) => onSpeedChanged(e.target.value)}
-                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-12"/>
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-16"/>
                                     </div>
                                     <div className="pr-6 mb-2">
-                                        <Label>Dist:</Label>
-                                        <input type="number" min="0" max="1000" step="0.1" value={stats.distance}
+                                        <Label>Distance:</Label>
+                                        <input type="number" min="0" max="10000" step="0.1" value={stats.distance}
                                                onChange={(e) => onDistanceChanged(e.target.value)}
-                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-14"/>
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-16"/>
                                     </div>
                                     <div className="pr-6 mb-2">
-                                        <Label>Elev:</Label>
+                                        <Label>Elevation:</Label>
                                         <input type="number" min="0" max="10000" step="1" value={stats.elevation}
                                                onChange={(e) => onElevationChanged(e.target.value)}
-                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-14"/>
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-16"/>
                                     </div>
                                     <div className="pr-6 mb-2">
                                         <Label>Time:</Label>
                                         <input type="number" min="0" max="999" step="1" value={stats.hours}
                                                onChange={(e) => onHoursChanged(e.target.value)}
-                                               className="bg-gray-700 text-white p-1 rounded w-10"/> :
+                                               className="bg-gray-700 text-white p-1 rounded w-12"/> 
+                                        <span className="text-gray-300 px-1">:</span>
                                         <input type="number" min="0" max="59" step="1" value={stats.minutes}
                                                onChange={(e) => onMinutesChanged(e.target.value)}
-                                               className="bg-gray-700 text-white p-1 rounded w-12"/> :
+                                               className="bg-gray-700 text-white p-1 rounded w-12"/>
+                                        <span className="text-gray-300 px-1">:</span>
                                         <input type="number" min="0" max="59" step="1" value={stats.seconds}
                                                onChange={(e) => onSecondsChanged(e.target.value)}
                                                className="bg-gray-700 text-white p-1 rounded w-12"/>
@@ -255,12 +287,18 @@ function App() {
                                 </div>
                             </>
                         }
-                        <div className="">
+                        <div className="pt-2">
                             <button className="bg-orange py-1 px-8 rounded text-white font-semibold">Update</button>
                             <a href="#advanced" onClick={(e) => onMoreOptionsClick(e)} className="text-gray-200 pl-6">
-                                <i className="fas fa-wrench pr-1 text-white"></i>
-                                { showAdvanced ? 'Hide advanced options' : 'More options...' }
+                                <i className="fad fa-wrench pr-1 text-white"></i>
+                                { showAdvanced ? 'Hide options' : 'More options...' }
                             </a>
+                            {showAdvanced &&
+                            <a href="#calcspeed" onClick={(e) => onCalculateSpeedClick(e)} className="text-gray-200 pl-6" title="Automatically calculate the speed from the distance and time">
+                                <i className="fad fa-tachometer pr-1 text-white"></i>
+                                Calculate speed
+                            </a>
+                            }
                         </div>
                     </form>
                 </div>
