@@ -14,10 +14,36 @@ function App() {
     const [name, setName] = useState('Zwift IRL 🏳️‍🌈')
     const [friend, setFriend] = useState('')
     const [route, setRoute] = useState('')
-    const [watts, setWatts] = useState(randomWatts())
+    const [watts, setWatts] = useState(0)
+    const [gradient, setGradient] = useState(0)
+    const [stats, setStats] = useState({ })
     const [powerup, setPowerup] = useState(-1)
     
     const [composition, setComposition] = useState(null)
+    
+    useEffect(() => {
+        setWatts(randomInt(100, 300))
+        setGradient(randomInt(-10, 10))
+        setStats({
+            speed: randomInt(20, 45),
+            distance: 0, 
+            elevation: randomInt(100, 300), 
+            hours: randomInt(0, 1), 
+            minutes: randomInt(1, 59), 
+            seconds: randomInt(1, 59)
+        })
+        calculateDistance()
+    }, [])
+    
+    function calculateDistance() {
+        setStats({...stats, distance: stats.speed * hoursDecimal()})
+    }
+    function calculateSpeed() {
+        setStats({...stats, speed: stats.distance / hoursDecimal()})
+    }
+    function hoursDecimal() {
+        return stats.hours + ((stats.minutes + (stats.seconds / 60)) / 60)
+    }
     
     function composeImage(backgroundPhoto) {
         const canvas = document.createElement('canvas')
@@ -97,9 +123,10 @@ function App() {
         return '700 ' + size + 'px Kanit'
     }
 
-    function randomWatts() {
-        return 100 + Math.floor(Math.random() * Math.floor(200))
+    function randomInt(min, max) {
+        return min + Math.floor(Math.random() * Math.floor(max - min))
     }
+    
 
     function onNameChanged(value) { setName(value) }    
     function onFriendChanged(value) { setFriend(value) }    
