@@ -143,10 +143,17 @@ function App() {
 
     function onNameChanged(value) { setName(value) }    
     function onFriendChanged(value) { setFriend(value) }    
-    function onRouteChanged(value) { setRoute(value) }    
-    function onWattsChanged(value) { setWatts(Math.min(Math.abs(value), 9999)) }    
+    function onRouteChanged(value) { setRoute(value) }     
     function onPowerupChanged(value) { setPowerup(parseInt(value)) }
-        
+    
+    function onWattsChanged(value) { setWatts(value) }
+    function onDistanceChanged(value) { setStats( { ...stats, distance: value }) }
+    function onSpeedChanged(value) { setStats( { ...stats, speed: value }) }
+    function onElevationChanged(value) { setStats( { ...stats, elevation: value }) }
+    function onHoursChanged(value) { setStats( { ...stats, hours: value }) }
+    function onMinutesChanged(value) { setStats( { ...stats, minutes: value }) }
+    function onSecondsChanged(value) { setStats( { ...stats, seconds: value }) }
+
     function onFormSubmit(e) {
         e.preventDefault()
         composeImage(photo)
@@ -213,7 +220,37 @@ function App() {
                                         <Label>Watts:</Label>
                                         <input type="number" min="0" max="9999" step="1" value={watts}
                                                onChange={(e) => onWattsChanged(e.target.value)}
-                                               className="bg-gray-700 text-white p-1 rounded"/>
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-14"/>
+                                    </div>
+                                    <div className="pr-6 mb-2">
+                                        <Label>Speed:</Label>
+                                        <input type="number" min="0" max="200" step="1" value={stats.speed}
+                                               onChange={(e) => onSpeedChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-12"/>
+                                    </div>
+                                    <div className="pr-6 mb-2">
+                                        <Label>Dist:</Label>
+                                        <input type="number" min="0" max="1000" step="0.1" value={stats.distance}
+                                               onChange={(e) => onDistanceChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-14"/>
+                                    </div>
+                                    <div className="pr-6 mb-2">
+                                        <Label>Elev:</Label>
+                                        <input type="number" min="0" max="10000" step="1" value={stats.elevation}
+                                               onChange={(e) => onElevationChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded w-24 md:w-14"/>
+                                    </div>
+                                    <div className="pr-6 mb-2">
+                                        <Label>Time:</Label>
+                                        <input type="number" min="0" max="999" step="1" value={stats.hours}
+                                               onChange={(e) => onHoursChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded w-10"/> :
+                                        <input type="number" min="0" max="59" step="1" value={stats.minutes}
+                                               onChange={(e) => onMinutesChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded w-12"/> :
+                                        <input type="number" min="0" max="59" step="1" value={stats.seconds}
+                                               onChange={(e) => onSecondsChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded w-12"/>
                                     </div>
                                 </div>
                             </>
