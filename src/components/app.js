@@ -6,6 +6,7 @@ import Footer from './footer'
 
 import Images from '../images'
 import PowerUps from '../powerups'
+import Colors from '../colors'
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
@@ -18,31 +19,32 @@ function App() {
     const [gradient, setGradient] = useState(0)
     const [stats, setStats] = useState({ })
     const [powerup, setPowerup] = useState(-1)
+    const [showAdvanced, setShowAdvanced] = useState(false)
     
     const [composition, setComposition] = useState(null)
     
     useEffect(() => {
         setWatts(randomInt(100, 300))
         setGradient(randomInt(-10, 10))
-        setStats({
+        const randomStats = {
             speed: randomInt(20, 45),
-            distance: 0, 
-            elevation: randomInt(100, 300), 
-            hours: randomInt(0, 1), 
-            minutes: randomInt(1, 59), 
+            elevation: randomInt(100, 300),
+            hours: 1,
+            minutes: randomInt(1, 40),
             seconds: randomInt(1, 59)
-        })
-        calculateDistance()
+        }
+        randomStats.distance = calculateDistance(randomStats)        
+        setStats(randomStats)
     }, [])
     
-    function calculateDistance() {
-        setStats({...stats, distance: stats.speed * hoursDecimal()})
+    function calculateDistance(s) {        
+        return Math.round(s.speed * hoursDecimal(s) * 10) / 10
     }
-    function calculateSpeed() {
-        setStats({...stats, speed: stats.distance / hoursDecimal()})
+    function calculateSpeed(s) {
+        return Math.round(s.distance / hoursDecimal(s))
     }
-    function hoursDecimal() {
-        return stats.hours + ((stats.minutes + (stats.seconds / 60)) / 60)
+    function hoursDecimal(s) {
+        return s.hours + ((s.minutes + (s.seconds / 60)) / 60)
     }
     
     function composeImage(backgroundPhoto) {
@@ -58,16 +60,28 @@ function App() {
         const drawY = (canvasSize.height - drawHeight) / 2
         ctx.drawImage(backgroundPhoto, 0, drawY, drawWidth, drawHeight)
         
-        // Top bar with distance, time etc
-        ctx.drawImage(Images.topBar, 620, 20)
-        ctx.fillStyle = "#fff";
+        // Top bar
+        ctx.drawImage(Images.topBar, 620, 21)
+        ctx.textAlign = 'right';
+        ctx.font = canvasFont(48)
+        
+        ctx.fillStyle = Colors.blue;
+        ctx.fillText(stats.speed.toFixed(0).toString(), 708, 70)
+        
+        ctx.fillStyle = Colors.black;
+        ctx.fillText(stats.distance.toFixed(1).toString(), 883, 70)
+        
+        ctx.fillStyle = Colors.blue;
+        ctx.fillText(stats.elevation.toFixed(0).toString(), 1053, 70)
+        
+        ctx.fillStyle = Colors.black;
+        ctx.fillText(stats.hours + ':' + stats.minutes.toString().padStart(2, '0') + ':' + stats.seconds.toString().padStart(2, '0'), 1251, 70)
         
         // Power box
         ctx.drawImage(Images.power, 20, 20)
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = Colors.white;
         ctx.font = canvasFont(105)
-        ctx.textAlign = 'right';
-        ctx.fillText(Math.min(Math.abs(watts), 9999), 278, 125)
+        ctx.fillText(watts.toString(), 278, 125)
         
         // Power up
         if (powerup >= 0) {
@@ -94,9 +108,9 @@ function App() {
             ctx.drawImage(Images.route, 0, 650)
             ctx.textAlign = 'right';
             ctx.font = canvasFont(70)
-            ctx.fillStyle = "#fff";
+            ctx.fillStyle = Colors.white;
             ctx.fillText(route, 1547, 880)
-            ctx.fillStyle = "#000";
+            ctx.fillStyle = Colors.black;
             ctx.fillText(route, 1545, 878)
         }
         
@@ -125,18 +139,22 @@ function App() {
 
     function randomInt(min, max) {
         return min + Math.floor(Math.random() * Math.floor(max - min))
-    }
-    
+    }    
 
     function onNameChanged(value) { setName(value) }    
     function onFriendChanged(value) { setFriend(value) }    
     function onRouteChanged(value) { setRoute(value) }    
-    function onWattsChanged(value) { setWatts(value) }    
+    function onWattsChanged(value) { setWatts(Math.min(Math.abs(value), 9999)) }    
     function onPowerupChanged(value) { setPowerup(parseInt(value)) }
         
     function onFormSubmit(e) {
         e.preventDefault()
         composeImage(photo)
+    }
+    
+    function onMoreOptionsClick(e) {
+        e.preventDefault()
+        setShowAdvanced(!showAdvanced)
     }
 
     const powerupOptions = PowerUps.map((powerUp, index) =>
@@ -175,12 +193,6 @@ function App() {
                                 <input type="text" value={route} onChange={(e) => onRouteChanged(e.target.value)}
                                        className="bg-gray-700 text-white p-1 rounded placeholder-gray-500" placeholder="Make up a route!"/>
                             </div>
-                            <div className="pr-6 mb-2">
-                                <Label>Watts:</Label>
-                                <input type="number" min="0" max="2000" step="1" value={watts}
-                                       onChange={(e) => onWattsChanged(e.target.value)}
-                                       className="bg-gray-700 text-white p-1 rounded"/>
-                            </div>
                         </div>
                         <div className="md:flex border-b border-gray-600 mb-3">
                             <div className="pr-6 mb-2">
@@ -194,8 +206,24 @@ function App() {
                                        className="bg-gray-700 text-white p-1 rounded placeholder-gray-500"/>
                             </div>
                         </div>
+                        { showAdvanced && 
+                            <>
+                                <div className="md:flex md:border-b border-gray-600 md:mb-2">                                   
+                                    <div className="pr-6 mb-2">
+                                        <Label>Watts:</Label>
+                                        <input type="number" min="0" max="9999" step="1" value={watts}
+                                               onChange={(e) => onWattsChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded"/>
+                                    </div>
+                                </div>
+                            </>
+                        }
                         <div className="">
                             <button className="bg-orange py-1 px-8 rounded text-white font-semibold">Update</button>
+                            <a href="#advanced" onClick={(e) => onMoreOptionsClick(e)} className="text-gray-200 pl-6">
+                                <i className="fas fa-wrench pr-1 text-white"></i>
+                                { showAdvanced ? 'Hide advanced options' : 'More options...' }
+                            </a>
                         </div>
                     </form>
                 </div>
