@@ -36,6 +36,10 @@ function App() {
     const [powerup, setPowerup] = useState('')
     const [rpm, setRpm] = useState(randomRpm())
     const [bpm, setBpm] = useState(randomBpm())
+    const [kph, setKph] = useState('41')
+    const [distance, setDistance] = useState('48.2')
+    const [elevation, setElevation] = useState('307')
+    const [duration, setDuration] = useState('1:23:45')
     
     const [composition, setComposition] = useState(null)
 
@@ -76,7 +80,25 @@ function App() {
         // Top bar with distance, time etc
         ctx.drawImage(uiImages[0], 620, 20)
         ctx.fillStyle = "#fff";
+        ctx.font = canvasFont(50)
+        ctx.textAlign = 'right';
+
+        // Speed
+        ctx.fillStyle = "#0095d1";
+        ctx.fillText(Math.min(Math.abs(kph)),708,69)
+
+        // Distance
+        ctx.fillStyle = "#000";
+        ctx.fillText(distance,884,69)
+
+        // Elevation
+        ctx.fillStyle = "#0095d1";
+        ctx.fillText(Math.min(Math.abs(elevation)),1051,69)
         
+        // Duration
+        ctx.fillStyle = "#000";
+        ctx.fillText(duration,1252,69)
+
         // Power box
         ctx.drawImage(uiImages[1], 20, 20)
         ctx.fillStyle = "#fff";
@@ -166,6 +188,10 @@ function App() {
     function onPowerupChanged(value) { setPowerup(value) }
     function onBpmChanged(value) { setBpm(value) }
     function onRpmChanged(value) { setRpm(value) }
+    function onKphChanged(value) { setKph(value) }
+    function onDistanceChanged(value)  { setDistance(value) }
+    function onElevationChanged(value) { setElevation(value) }
+    function onDurationChanged(value) { setDuration(value) }
         
     function onFormSubmit(e) {
         e.preventDefault()
@@ -224,6 +250,31 @@ function App() {
                                 <Label>BPM:</Label>
                                 <input type="number" min="0" max="300" step="1" value={bpm}
                                        onChange={(e) => onBpmChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                        </div>
+                        <div className="md:flex md:border-b border-gray-600 md:mb-2">
+                            <div className="pr-6 mb-2">
+                                <Label>KPH:</Label>
+                                <input type="number" min="0" max="2000" step="1" value={kph}
+                                       onChange={(e) => onKphChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                            <div className="pr-6 mb-2">
+                                <Label>Distance:</Label>
+                                <input type="text" value={distance} onChange={(e) => onDistanceChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                            <div className="pr-6 mb-2">
+                                <Label>Elevation:</Label>
+                                <input type="number" min="0" max="2000" step="1" value={elevation}
+                                       onChange={(e) => onElevationChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                            <div className="pr-6 mb-2">
+                                <Label>Duration:</Label>
+                                <input type="text" value={duration}
+                                       onChange={(e) => onDurationChanged(e.target.value)}
                                        className="bg-gray-700 text-white p-1 rounded"/>
                             </div>
                         </div>
