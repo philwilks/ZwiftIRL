@@ -34,6 +34,8 @@ function App() {
     const [route, setRoute] = useState('')
     const [watts, setWatts] = useState(randomWatts())
     const [powerup, setPowerup] = useState('')
+    const [rpm, setRpm] = useState(randomRpm())
+    const [bpm, setBpm] = useState(randomBpm())
     
     const [composition, setComposition] = useState(null)
 
@@ -81,6 +83,15 @@ function App() {
         ctx.font = canvasFont(105)
         ctx.textAlign = 'right';
         ctx.fillText(Math.min(Math.abs(watts), 9999), 278, 125)
+
+        // Cadence RPM
+        ctx.fillStyle = "#000";
+        ctx.font = canvasFont(63)
+        ctx.textAlign = 'right';
+        ctx.fillText(Math.min(Math.abs(rpm)), 115, 205)
+
+        // Heart rate BPM
+        ctx.fillText(Math.min(Math.abs(bpm)), 273, 205)
         
         // Power up
         if (powerup != '') {
@@ -140,11 +151,21 @@ function App() {
         return 100 + Math.floor(Math.random() * Math.floor(200))
     }
 
+    function randomBpm() {
+        return 100 + Math.floor(Math.random() * Math.floor(50))
+    }
+
+    function randomRpm() {
+        return 100 + Math.floor(Math.random() * Math.floor(50))
+    }
+
     function onNameChanged(value) { setName(value) }    
     function onFriendChanged(value) { setFriend(value) }    
     function onRouteChanged(value) { setRoute(value) }    
     function onWattsChanged(value) { setWatts(value) }    
     function onPowerupChanged(value) { setPowerup(value) }
+    function onBpmChanged(value) { setBpm(value) }
+    function onRpmChanged(value) { setRpm(value) }
         
     function onFormSubmit(e) {
         e.preventDefault()
@@ -191,6 +212,18 @@ function App() {
                                 <Label>Watts:</Label>
                                 <input type="number" min="0" max="2000" step="1" value={watts}
                                        onChange={(e) => onWattsChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                            <div className="pr-6 mb-2">
+                                <Label>RPM:</Label>
+                                <input type="number" min="0" max="200" step="1" value={rpm}
+                                       onChange={(e) => onRpmChanged(e.target.value)}
+                                       className="bg-gray-700 text-white p-1 rounded"/>
+                            </div>
+                            <div className="pr-6 mb-2">
+                                <Label>BPM:</Label>
+                                <input type="number" min="0" max="300" step="1" value={bpm}
+                                       onChange={(e) => onBpmChanged(e.target.value)}
                                        className="bg-gray-700 text-white p-1 rounded"/>
                             </div>
                         </div>
