@@ -4,59 +4,20 @@ import Header from './header'
 import Label from './label'
 import Footer from './footer'
 
-import distanceBgUrl from '../images/distance.png';
-import powerBgUrl from '../images/power.png';
-import routeBgUrl from '../images/route.png';
-import madeWithUrl from '../images/madewith.png';
-import mapUrl from '../images/map.png';
-import riders1Url from '../images/riders1.png';
-import riders2Url from '../images/riders2.png';
-
-import featherUrl from '../images/feather.png';
-import aeroUrl from '../images/aero.png';
-import sunUrl from '../images/sun.png';
-import coffeeUrl from '../images/coffee.png';
-import tailwindUrl from '../images/tailwind.png';
-import mudUrl from '../images/mud.png';
+import Images from '../images'
+import PowerUps from '../powerups'
 
 function App() {
     const canvasSize = { width: 1920, height: 1080 }
-    const uiImageUrls = [distanceBgUrl, powerBgUrl, routeBgUrl, madeWithUrl, mapUrl, riders1Url, riders2Url]
-    const puImageUrls = [featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl, mudUrl]
-    const uiImages = []
-    const puImages = []
-    const powerupList = ['Feather', 'Aero Boost', 'Vitamin D', 'Coffee Stop', 'Tailwind', 'Mud']
     
-    const [isLoading, setIsLoading] = useState(true)
     const [photo, setPhoto] = useState(null)
     const [name, setName] = useState('Zwift IRL 🏳️‍🌈')
     const [friend, setFriend] = useState('')
     const [route, setRoute] = useState('')
     const [watts, setWatts] = useState(randomWatts())
-    const [powerup, setPowerup] = useState('')
+    const [powerup, setPowerup] = useState(-1)
     
     const [composition, setComposition] = useState(null)
-
-    useEffect(() => {        
-        preloadImages(uiImageUrls, uiImages).then(r => {})
-        preloadImages(puImageUrls, puImages).then(r => {})
-    })
-    
-    const preloadImages = async (srcArray, imageArray) => {
-        const promises = await srcArray.map((src) => {
-            return new Promise(function (resolve, reject) {
-                    const img = new Image()
-                    img.src = src
-                    img.onload = resolve()
-                    img.onerror = reject()
-                    imageArray.push(img)
-                }
-            )
-        })
-        
-        await Promise.all(promises)
-        setIsLoading(false)
-    }
     
     function composeImage(backgroundPhoto) {
         const canvas = document.createElement('canvas')
@@ -72,29 +33,29 @@ function App() {
         ctx.drawImage(backgroundPhoto, 0, drawY, drawWidth, drawHeight)
         
         // Top bar with distance, time etc
-        ctx.drawImage(uiImages[0], 620, 20)
+        ctx.drawImage(Images.topBar, 620, 20)
         ctx.fillStyle = "#fff";
         
         // Power box
-        ctx.drawImage(uiImages[1], 20, 20)
+        ctx.drawImage(Images.power, 20, 20)
         ctx.fillStyle = "#fff";
         ctx.font = canvasFont(105)
         ctx.textAlign = 'right';
         ctx.fillText(Math.min(Math.abs(watts), 9999), 278, 125)
         
         // Power up
-        if (powerup != '') {
-            ctx.drawImage(puImages[parseInt(powerup)], 320, 30)
+        if (powerup >= 0) {
+            ctx.drawImage(PowerUps[powerup].image, 320, 30)
         }
 
         // Map
-        ctx.drawImage(uiImages[4], 1454, 24)
+        ctx.drawImage(Images.map, 1454, 24)
         
         // Made with
-        ctx.drawImage(uiImages[3], 25, 990)
+        ctx.drawImage(Images.madeWith, 25, 990)
         
         // Riders
-        ctx.drawImage(uiImages[friend ? 6 : 5], 1563, 340)
+        ctx.drawImage(friend ? Images.riders2 : Images.riders1, 1563, 340)
         ctx.font = canvasFont(24)
         ctx.textAlign = 'right';
         ctx.fillText(name, 1887, 622)
@@ -104,7 +65,7 @@ function App() {
         
         if (route) {
             // Route badge box
-            ctx.drawImage(uiImages[2], 0, 650)
+            ctx.drawImage(Images.route, 0, 650)
             ctx.textAlign = 'right';
             ctx.font = canvasFont(70)
             ctx.fillStyle = "#fff";
@@ -144,15 +105,15 @@ function App() {
     function onFriendChanged(value) { setFriend(value) }    
     function onRouteChanged(value) { setRoute(value) }    
     function onWattsChanged(value) { setWatts(value) }    
-    function onPowerupChanged(value) { setPowerup(value) }
+    function onPowerupChanged(value) { setPowerup(parseInt(value)) }
         
     function onFormSubmit(e) {
         e.preventDefault()
         composeImage(photo)
     }
 
-    const powerupOptions = powerupList.map((description, index) =>
-        <option value={index.toString()} key={index}>{description}</option>
+    const powerupOptions = PowerUps.map((powerUp, index) =>
+        <option value={index.toString()} key={index}>{powerUp.name}</option>
     );
     
     return (
@@ -178,7 +139,7 @@ function App() {
                             <div className="pr-6 mb-2">
                                 <Label>Power-up:</Label>
                                 <select id="lang" onChange={(e) => onPowerupChanged(e.target.value)} value={powerup}>
-                                    <option value="">None</option>
+                                    <option value="-1">None</option>
                                     {powerupOptions}
                                 </select>
                             </div>
@@ -229,15 +190,7 @@ function App() {
                             <div className="pl-2 text-white md:text-lg">Save or copy the image above. If this doesn't work for you, <a href={composition} download="ZwiftIRL.jpg" className="text-orange font-semibold">download it here</a> instead.</div> 
                         </div>  
                     </div>
-
-                    <div className="text-gray-300 text-center px-4 mt-8">
-                        <p><strong>Tip:</strong> To put a flag after your name, add an emoji 👋</p>
-                    </div>
                 </>
-            }
-            {
-                isLoading &&
-                <div className="text-center text-gray-500 pt-4">Loading...</div>
             }
             
             <div style={{fontFamily: 'Kanit', fontWeight: 700}}>&nbsp;</div>
