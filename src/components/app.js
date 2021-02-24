@@ -167,15 +167,7 @@ function App() {
     function randomInt(min, max) {
         return min + Math.floor(Math.random() * Math.floor(max - min))
     }
-
-    function randomBpm() {
-        return 100 + Math.floor(Math.random() * Math.floor(50))
-    }
-
-    function randomRpm() {
-        return 100 + Math.floor(Math.random() * Math.floor(50))
-    }
-
+    
     function onNameChanged(value) { setName(value) }    
     function onFriendChanged(value) { setFriend(value) }    
     function onRouteChanged(value) { setRoute(value) }     
