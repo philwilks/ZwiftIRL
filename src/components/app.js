@@ -20,11 +20,15 @@ function App() {
     const [stats, setStats] = useState({ })
     const [powerup, setPowerup] = useState(-1)
     const [showAdvanced, setShowAdvanced] = useState(false)
+    const [bpm, setBpm] = useState(0)
+    const [rpm, setRpm] = useState(0)
     
     const [composition, setComposition] = useState(null)
     
     useEffect(() => {
         setWatts(randomInt(100, 300))
+        setBpm(randomInt(50,180))
+        setRpm(randomInt(75,95))
         setGradient(randomInt(-2, 9))
         const randomStats = {
             speed: randomInt(20, 45),
@@ -82,6 +86,14 @@ function App() {
         ctx.fillStyle = Colors.white
         ctx.font = canvasFont(105)
         ctx.fillText(watts.toString(), 278, 125)
+
+        // RPM
+        ctx.fillStyle = Colors.black
+        ctx.font = canvasFont(63)
+        ctx.fillText(rpm.toString(), 115, 205)
+
+        // BPM
+        ctx.fillText(bpm.toString(), 273, 205)
         
         // Power up
         if (powerup >= 0) {
@@ -154,7 +166,15 @@ function App() {
 
     function randomInt(min, max) {
         return min + Math.floor(Math.random() * Math.floor(max - min))
-    }    
+    }
+
+    function randomBpm() {
+        return 100 + Math.floor(Math.random() * Math.floor(50))
+    }
+
+    function randomRpm() {
+        return 100 + Math.floor(Math.random() * Math.floor(50))
+    }
 
     function onNameChanged(value) { setName(value) }    
     function onFriendChanged(value) { setFriend(value) }    
@@ -162,6 +182,8 @@ function App() {
     function onPowerupChanged(value) { setPowerup(parseInt(value)) }
     
     function onWattsChanged(value) { setWatts(parseInt(value)) }
+    function onRpmChanged(value) { setRpm(parseInt(value)) }
+    function onBpmChanged(value) { setBpm(parseInt(value)) }
     function onGradientChanged(value) { setGradient(parseInt(value)) }
     
     function onDistanceChanged(value) { setStats( { ...stats, distance: parseFloat(value) }) }
@@ -243,6 +265,18 @@ function App() {
                                         <input type="number" min="0" max="9999" step="1" value={watts}
                                                onChange={(e) => onWattsChanged(e.target.value)}
                                                className="bg-gray-700 text-white p-1 rounded w-24 md:w-16"/>
+                                    </div>
+                                    <div className="pr-6 mb-2">
+                                        <Label>RPM:</Label>
+                                        <input type="number" min="0" max="200" step="1" value={rpm}
+                                            onChange={(e) => onRpmChanged(e.target.value)}
+                                            className="bg-gray-700 text-white p-1 rounded"/>
+                                    </div>
+                                    <div className="pr-6 mb-2">
+                                        <Label>BPM:</Label>
+                                        <input type="number" min="0" max="300" step="1" value={bpm}
+                                            onChange={(e) => onBpmChanged(e.target.value)}
+                                            className="bg-gray-700 text-white p-1 rounded"/>
                                     </div>
                                     <div className="pr-6 mb-2">
                                         <Label>Gradient:</Label>
