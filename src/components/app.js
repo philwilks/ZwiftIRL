@@ -106,10 +106,7 @@ function App() {
         ctx.strokeStyle = Colors.black
         ctx.lineWidth = 4
         ctx.strokeText(gradient.toString(), 1857, 100)
-        if (gradient >= 10) ctx.fillStyle = Colors.grad10plus
-        else if (gradient >= 7) ctx.fillStyle = Colors.grad7to9
-        else if (gradient >= 3) ctx.fillStyle = Colors.grad3to6
-        else ctx.fillStyle = Colors.white;
+        ctx.fillStyle = Colors.forGradient(gradient)
         ctx.fillText(gradient.toString(), 1857, 100)
         
         ctx.font = canvasFont(25)
@@ -262,13 +259,13 @@ function App() {
                                         <Label>RPM:</Label>
                                         <input type="number" min="0" max="200" step="1" value={rpm}
                                             onChange={(e) => onRpmChanged(e.target.value)}
-                                            className="bg-gray-700 text-white p-1 rounded"/>
+                                            className="bg-gray-700 text-white p-1 rounded w-24 md:w-16"/>
                                     </div>
                                     <div className="pr-6 mb-2">
                                         <Label>BPM:</Label>
                                         <input type="number" min="0" max="300" step="1" value={bpm}
                                             onChange={(e) => onBpmChanged(e.target.value)}
-                                            className="bg-gray-700 text-white p-1 rounded"/>
+                                            className="bg-gray-700 text-white p-1 rounded w-24 md:w-16"/>
                                     </div>
                                     <div className="pr-6 mb-2">
                                         <Label>Gradient:</Label>
@@ -314,17 +311,21 @@ function App() {
                             </>
                         }
                         <div className="pt-2">
-                            <button className="bg-orange py-1 px-8 rounded text-white font-semibold">Update</button>
-                            <a href="#advanced" onClick={(e) => onMoreOptionsClick(e)} className="text-gray-200 pl-6">
-                                <i className="fad fa-wrench pr-1 text-white"></i>
-                                { showAdvanced ? 'Hide options' : 'More options...' }
-                            </a>
-                            {showAdvanced &&
-                            <a href="#calcspeed" onClick={(e) => onCalculateSpeedClick(e)} className="text-gray-200 pl-6" title="Automatically calculate the speed from the distance and time">
-                                <i className="fad fa-tachometer pr-1 text-white"></i>
-                                Calculate speed
-                            </a>
-                            }
+                            <button className="bg-orange py-1 px-8 rounded text-white font-semibold mr-6">Update</button>
+                            <div className="inline-block">
+                                <a href="#advanced" onClick={(e) => onMoreOptionsClick(e)} className="text-gray-200">
+                                    <i className="fad fa-wrench pr-1 text-white"></i>
+                                    { showAdvanced ? 'Hide options' : 'More options...' }
+                                </a>
+                                {showAdvanced &&
+                                <a href="#calcspeed" onClick={(e) => onCalculateSpeedClick(e)}
+                                   className="text-gray-200 pl-6"
+                                   title="Automatically calculate the speed from the distance and time">
+                                    <i className="fad fa-tachometer pr-1 text-white"></i>
+                                    Calculate speed
+                                </a>
+                                }
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -349,7 +350,7 @@ function App() {
                 </>
             }
             
-            <div style={{fontFamily: 'Kanit', fontWeight: 700}}>&nbsp;</div>
+            <div style={{fontFamily: 'Kanit', fontWeight: 700}}>&nbsp;</div> { /* needed to preload font for use in Canvas */ }
             <Footer />
         </>
     )
