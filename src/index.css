@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family:"Proxima Nova Black";
+    font-weight: 700;
+    src: url(./fonts/proximanova-black-webfont.woff) format("woff");
+    font-style:normal;
+  }
+}
