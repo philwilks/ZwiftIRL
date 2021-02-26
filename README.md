@@ -6,9 +6,9 @@ This is all done in the browser using React and HTML Canvas, without the need fo
 the image. I didn't know this was possible until I started this project, but it turns out Canvas
 is pretty powerful and well supported.
 
-Made in a day, and hosted with [AWS Amplify](https://aws.amazon.com/amplify/) which is a great way of hosting front-end apps.
+The original project was pretty much made in a day. I'm now working on it in the evenings and weekends to add a few more features. If you have an idea and want to contribute, please start by making an issue so we can discuss it.
 
-Styled without writing any CSS using [Tailwind CSS](https://tailwindcss.com), which is awesome.
+Hosted with [AWS Amplify](https://aws.amazon.com/amplify/) which is a great way of hosting front-end apps. Styled using [Tailwind CSS](https://tailwindcss.com), which is awesome.
 
 ## Reading list
 
