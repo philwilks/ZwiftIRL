@@ -131,7 +131,7 @@ function App() {
             // Route badge box
             ctx.drawImage(Images.route, 0, 650)
             ctx.textAlign = 'right'
-            ctx.font = routeFont(50)
+            ctx.font = canvasFont(50)
             ctx.fillStyle = Colors.white;
             ctx.fillText(route.toUpperCase(), 1547, 900)
             ctx.fillStyle = Colors.black;
@@ -159,10 +159,6 @@ function App() {
     
     function canvasFont(size) {
         return '700 ' + size + 'px Kanit'
-    }
-
-    function routeFont(size) {
-      return '700 ' + size + 'px Proxima Nova Black'
     }
 
     function randomInt(min, max) {
@@ -355,7 +351,6 @@ function App() {
             }
             
             <div style={{fontFamily: 'Kanit', fontWeight: 700}}>&nbsp;</div> { /* needed to preload font for use in Canvas */ }
-            <div style={{fontFamily: 'Proxima Nova Black', fontWeight: 700}}>&nbsp;</div> { /* needed to preload font for use in Canvas */ }
             <Footer />
         </>
     )
