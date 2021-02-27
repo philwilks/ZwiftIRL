@@ -66,11 +66,11 @@ const Achievements = [
     },
     {
         imageUrl: rideOn1,
-        name: 'Ride-on 1'
+        name: 'Ride on 1'
     },
     {
         imageUrl: rideOn2,
-        name: 'Ride-on 2'
+        name: 'Ride on 2'
     },
     {
         imageUrl: wheelie1,
