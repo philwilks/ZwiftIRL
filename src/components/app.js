@@ -134,11 +134,20 @@ function App() {
             ctx.drawImage(Images.banner, 0, 730)
             ctx.drawImage(Images.route, 270, 726)
             ctx.textAlign = 'right'
+            
+            ctx.font = canvasFont(68)
+            ctx.fillStyle = Colors.white;
+            ctx.fillText('ROUTE COMPLETE', 1547, 890)
+            
+            ctx.font = canvasFont(30)
+            ctx.fillStyle = Colors.white;
+            ctx.fillText('Great work! Keep exploring!', 1547, 1008)
+            
             ctx.font = canvasFont(70)
             ctx.fillStyle = Colors.white;
-            ctx.fillText(route, 1547, 880)
+            ctx.fillText(route, 1547, 960)
             ctx.fillStyle = Colors.black;
-            ctx.fillText(route, 1545, 878)
+            ctx.fillText(route, 1545, 958)
         }
         
         setComposition(canvas.toDataURL('image/jpeg', 0.95))
