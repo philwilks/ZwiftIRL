@@ -7,9 +7,10 @@ import Footer from './footer'
 import Images from '../images'
 import PowerUps from '../powerups'
 import Colors from '../colors'
+import Achievements from '../achievements'
 
 function App() {
-    const canvasSize = { width: 1920, height: 1080 }
+    const canvasSize = { width: 1920, height: 1200 }
     
     const [photo, setPhoto] = useState(null)
     const [name, setName] = useState('Zwift IRL 🏳️‍🌈')
@@ -112,11 +113,12 @@ function App() {
         
         ctx.font = canvasFont(25)
         ctx.lineWidth = 3
+        ctx.fillStyle = Colors.white
         ctx.strokeText('%', 1880, 100)
         ctx.fillText('%', 1880, 100)
         
         // Made with
-        ctx.drawImage(Images.madeWith, 25, 990)
+        ctx.drawImage(Images.madeWith, 25, 1110)
         
         // Riders
         ctx.drawImage(friend ? Images.riders2 : Images.riders1, 1563, 340)
@@ -129,8 +131,8 @@ function App() {
         }        
         
         if (route) {
-            // Route badge box
-            ctx.drawImage(Images.banner, 0, 650)
+            ctx.drawImage(Images.banner, 0, 730)
+            ctx.drawImage(Images.route, 270, 726)
             ctx.textAlign = 'right'
             ctx.font = canvasFont(70)
             ctx.fillStyle = Colors.white;
