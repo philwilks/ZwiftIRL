@@ -5,10 +5,10 @@ function Footer(props) {
         <div className="text-center py-10 max-w-4xl mx-auto">
             <p className="px-3 mt-8 border-t-2 border-gray-600 pt-6 text-white text-xl mb-2 font-bold">What's new in v2?</p>
             <div className="max-w-2xl mx-auto text-left text-gray-300 mb-6 px-3">
-                <p className="my-3">Thank you so much for all the support for ZwiftIrl, it's been great seeing what you've made! In the 5 says since lauch you created over 50,000 images 🤯</p>
+                <p className="my-3">Thank you so much for all the support for Zwift IRL, it's been great seeing what you've made! In the 5 says since lauch you created over 50,000 images 🤯</p>
                 <p className="my-3">Here's what's new in v2...</p>
                 <p className="my-3"><strong className="text-white">🏅 Achievements: </strong> As well as the classic route badges you can also now select from 20 achievement badges. The best bit is that you can also customise the title and details for these, so get creative!</p>
-                <p className="my-3"><strong className="text-white">🚀 Auto updating: </strong> The ZwiftIRL image now updates as you change the options! </p>
+                <p className="my-3"><strong className="text-white">🚀 Auto updating: </strong> The Zwift IRL image now updates as you change the options! </p>
                 <p className="my-3"><strong className="text-white">⚡️ New power-ups: </strong> Please welcome Group Ride and Gravel to the team.</p>
                 <p className="my-3"><strong className="text-white">👌 Aspect ratio: </strong> The generated image now has a taller aspect ratio so it doesn't get cropped as much when you post to Strava.</p>
             </div>
