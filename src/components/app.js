@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import useDebouncedEffect  from 'use-debounced-effect'
 
 import Header from './header'
 import Label from './label'
@@ -7,18 +8,21 @@ import Footer from './footer'
 import Images from '../images'
 import PowerUps from '../powerups'
 import Colors from '../colors'
+import Achievements from '../achievements'
 
 function App() {
-    const canvasSize = { width: 1920, height: 1080 }
+    const canvasSize = { width: 1920, height: 1200 }
     
     const [photo, setPhoto] = useState(null)
     const [name, setName] = useState('Zwift IRL 🏳️‍🌈')
     const [friend, setFriend] = useState('')
-    const [route, setRoute] = useState('')
+    const [customHeading, setCustomHeading] = useState('')
+    const [customDetails, setCustomDetails] = useState('')
     const [watts, setWatts] = useState(0)
     const [gradient, setGradient] = useState(0)
     const [stats, setStats] = useState({ })
     const [powerup, setPowerup] = useState(-1)
+    const [achievement, setAchievement] = useState("route")
     const [showAdvanced, setShowAdvanced] = useState(false)
     const [bpm, setBpm] = useState(0)
     const [rpm, setRpm] = useState(0)
@@ -40,7 +44,15 @@ function App() {
         randomStats.distance = calculateDistance(randomStats)        
         setStats(randomStats)
     }, [])
-    
+
+    useEffect(() => {
+        if (photo) composeImage()
+    }, [photo, powerup, achievement])
+
+    useDebouncedEffect(()=>{
+        if (photo) composeImage()
+    }, 400, [customHeading, customDetails, name, friend, watts, gradient, stats, bpm, rpm]);
+        
     function calculateDistance(s) {        
         return Math.round(s.speed * hoursDecimal(s) * 10) / 10
     }
@@ -50,8 +62,8 @@ function App() {
     function hoursDecimal(s) {
         return s.hours + ((s.minutes + (s.seconds / 60)) / 60)
     }
-    
-    function composeImage(backgroundPhoto) {
+
+    async function composeImage() {
         const canvas = document.createElement('canvas')
         canvas.width = canvasSize.width
         canvas.height = canvasSize.height
@@ -60,9 +72,9 @@ function App() {
 
         // Background image
         const drawWidth = canvasSize.width
-        const drawHeight = drawWidth / backgroundPhoto.width * backgroundPhoto.height
+        const drawHeight = drawWidth / photo.width * photo.height
         const drawY = (canvasSize.height - drawHeight) / 2
-        ctx.drawImage(backgroundPhoto, 0, drawY, drawWidth, drawHeight)
+        ctx.drawImage(photo, 0, drawY, drawWidth, drawHeight)
         
         // Top bar
         ctx.drawImage(Images.topBar, 620, 21)
@@ -97,7 +109,8 @@ function App() {
         
         // Power up
         if (powerup >= 0) {
-            ctx.drawImage(PowerUps[powerup].image, 320, 30)
+            const img = await imageAsync(PowerUps[powerup].imageUrl)
+            ctx.drawImage(img, 320, 30)
         }
 
         // Map
@@ -111,11 +124,12 @@ function App() {
         
         ctx.font = canvasFont(25)
         ctx.lineWidth = 3
+        ctx.fillStyle = Colors.white
         ctx.strokeText('%', 1880, 100)
         ctx.fillText('%', 1880, 100)
         
         // Made with
-        ctx.drawImage(Images.madeWith, 25, 990)
+        ctx.drawImage(Images.madeWith, 25, 1110)
         
         // Riders
         ctx.drawImage(friend ? Images.riders2 : Images.riders1, 1563, 340)
@@ -127,15 +141,40 @@ function App() {
             ctx.fillText(friend, 1887, 566)
         }        
         
-        if (route) {
-            // Route badge box
-            ctx.drawImage(Images.route, 0, 650)
+        // Achievement banner
+        if (achievement) {
+            ctx.drawImage(Images.banner, 0, 730)
             ctx.textAlign = 'right'
+
+            let badge, heading, details;
+            if (achievement === 'route') {
+                badge = Images.route
+                heading = customHeading
+                details = 'Great work! Keep exploring!'
+            }
+            else {
+                const index = parseInt(achievement.replace('achievement', ''))
+                badge = await imageAsync(Achievements[index].imageUrl)
+                heading = customHeading || Achievements[index].name
+                details = customDetails || Achievements[index].details                
+            }
+            
+            ctx.font = canvasFont(68)
+            ctx.fillStyle = Colors.white;
+            ctx.fillText(achievement === 'route' ? 'ROUTE COMPLETE' : 'ACHIEVEMENT UNLOCKED', 1547, 880)
+            
             ctx.font = canvasFont(70)
             ctx.fillStyle = Colors.white;
-            ctx.fillText(route, 1547, 880)
+            ctx.fillText(heading, 1547, 954)
             ctx.fillStyle = Colors.black;
-            ctx.fillText(route, 1545, 878)
+            ctx.fillText(heading, 1545, 952)
+
+            ctx.font = canvasFont(37)
+            ctx.fillStyle = Colors.white;
+            ctx.fillText(details, 1547, 1004)
+            
+            
+            ctx.drawImage(badge, 265, 721)
         }
         
         setComposition(canvas.toDataURL('image/jpeg', 0.95))
@@ -150,7 +189,6 @@ function App() {
                 img.src = progress.target.result
                 img.onload = function() {
                     setPhoto(img)
-                    composeImage(img)
                 };                
             };
             FR.readAsDataURL(target.files[0])
@@ -167,8 +205,10 @@ function App() {
     
     function onNameChanged(value) { setName(value) }    
     function onFriendChanged(value) { setFriend(value) }    
-    function onRouteChanged(value) { setRoute(value) }     
+    function onCustomHeadingChanged(value) { setCustomHeading(value) }
+    function onCustomDetailsChanged(value) { setCustomDetails(value) }
     function onPowerupChanged(value) { setPowerup(parseInt(value)) }
+    function onAchievementChanged(value) { setAchievement(value) }
     
     function onWattsChanged(value) { setWatts(parseInt(value)) }
     function onRpmChanged(value) { setRpm(parseInt(value)) }
@@ -184,7 +224,7 @@ function App() {
 
     function onFormSubmit(e) {
         e.preventDefault()
-        composeImage(photo)
+        composeImage()
     }
     
     function onMoreOptionsClick(e) {
@@ -200,6 +240,19 @@ function App() {
     const powerupOptions = PowerUps.map((powerUp, index) =>
         <option value={index.toString()} key={index}>{powerUp.name}</option>
     );
+    
+    const achievementOptions = Achievements.map((achievement, index) =>
+        <option value={"achievement" + index.toString()} key={index}>{achievement.name}</option>
+    );
+
+    function imageAsync(src) {
+        return new Promise((resolve, reject) => {
+            let img = new Image()
+            img.onload = () => resolve(img)
+            img.onerror = reject
+            img.src = src
+        })
+    }
     
     return (
         <>
@@ -229,11 +282,44 @@ function App() {
                                 </select>
                             </div>
                             <div className="pr-6 mb-2">
-                                <Label>Route badge:</Label>
-                                <input type="text" value={route} onChange={(e) => onRouteChanged(e.target.value)}
-                                       className="bg-gray-700 text-white p-1 rounded placeholder-gray-500" placeholder="Make up a route!"/>
+                                <Label>Achievement:</Label>
+                                <select id="lang" onChange={(e) => onAchievementChanged(e.target.value)} value={achievement} className="leading-3">
+                                    <option value="">None</option>
+                                    <option value="route">Route badge</option>
+                                    {achievementOptions}
+                                </select>
                             </div>
                         </div>
+                        {achievement &&
+                            <div className="md:flex md:border-b border-gray-600 md:mb-2">
+                                {achievement === 'route' ?
+                                    <div className="pr-6 mb-2">
+                                        <Label>Route name:</Label>
+                                        <input type="text" value={customHeading}
+                                               onChange={(e) => onCustomHeadingChanged(e.target.value)}
+                                               className="bg-gray-700 text-white p-1 rounded placeholder-gray-500 md:w-80"
+                                               placeholder="Make up a route!"/>
+                                    </div>
+                                    :
+                                    <>
+                                        <div className="pr-6 mb-2">
+                                            <Label>Custom title:</Label>
+                                            <input type="text" value={customHeading}
+                                                   onChange={(e) => onCustomHeadingChanged(e.target.value)}
+                                                   className="bg-gray-700 text-white p-1 rounded placeholder-gray-500"
+                                                   placeholder="What did you do?"/>
+                                        </div>
+                                        <div className="pr-6 mb-2">
+                                            <Label>Details:</Label>
+                                            <input type="text" value={customDetails}
+                                                   onChange={(e) => onCustomDetailsChanged(e.target.value)}
+                                                   className="bg-gray-700 text-white p-1 rounded placeholder-gray-500 md:w-80"
+                                                   placeholder="Tell us more!"/>
+                                        </div>
+                                    </>
+                                }
+                            </div>
+                        }
                         <div className="md:flex border-b border-gray-600 mb-2">
                             <div className="pr-6 mb-2">
                                 <Label>Your name:</Label>
@@ -310,22 +396,19 @@ function App() {
                                 </div>
                             </>
                         }
-                        <div className="pt-2">
-                            <button className="bg-orange py-1 px-8 rounded text-white font-semibold mr-6">Update</button>
-                            <div className="inline-block">
-                                <a href="#advanced" onClick={(e) => onMoreOptionsClick(e)} className="text-gray-200">
-                                    <i className="fad fa-wrench pr-1 text-white"></i>
-                                    { showAdvanced ? 'Hide options' : 'More options...' }
-                                </a>
-                                {showAdvanced &&
-                                <a href="#calcspeed" onClick={(e) => onCalculateSpeedClick(e)}
-                                   className="text-gray-200 pl-6"
-                                   title="Automatically calculate the speed from the distance and time">
-                                    <i className="fad fa-tachometer pr-1 text-white"></i>
-                                    Calculate speed
-                                </a>
-                                }
-                            </div>
+                        <div className="pt-1">
+                            <a href="#advanced" onClick={(e) => onMoreOptionsClick(e)} className="text-gray-200">
+                                <i className="fas fa-wrench pr-1 text-orange"></i>
+                                { showAdvanced ? 'Hide options' : 'More options...' }
+                            </a>
+                            {showAdvanced &&
+                            <a href="#calcspeed" onClick={(e) => onCalculateSpeedClick(e)}
+                               className="text-gray-200 pl-6"
+                               title="Automatically calculate the speed from the distance and time">
+                                <i className="fas fa-tachometer pr-1 text-orange"></i>
+                                Calculate speed
+                            </a>
+                            }
                         </div>
                     </form>
                 </div>

@@ -1,25 +1,45 @@
-import { preloadImages } from './helpers'
+import featherUrl from './images/powerups/feather.png';
+import aeroUrl from './images/powerups/aero.png';
+import sunUrl from './images/powerups/sun.png';
+import coffeeUrl from './images/powerups/coffee.png';
+import tailwindUrl from './images/powerups/tailwind.png';
+import groupRideUrl from './images/powerups/groupride.png';
+import mudUrl from './images/powerups/mud.png';
+import gravelUrl from './images/powerups/gravel.png';
 
-import featherUrl from './images/feather.png';
-import aeroUrl from './images/aero.png';
-import sunUrl from './images/sun.png';
-import coffeeUrl from './images/coffee.png';
-import tailwindUrl from './images/tailwind.png';
-import mudUrl from './images/mud.png';
-
-const uiImageUrls = [featherUrl, aeroUrl, sunUrl, coffeeUrl, tailwindUrl, mudUrl]
-const uiImageArray = []
-const names = ['Feather', 'Aero Boost', 'Vitamin D', 'Coffee Stop', 'Tailwind', 'Mud']
-
-const PowerUps = [];
-
-async function loadPowerups() {    
-    await preloadImages(uiImageUrls, uiImageArray)
-    names.map((name, index) => {
-        PowerUps.push({ name, image: uiImageArray[index] })
-    })
-    console.log('Loaded powerups 🚀️')
-}
-loadPowerups().then(r => {})
+const PowerUps = [
+    {
+        imageUrl: featherUrl,
+        name: 'Feather'
+    },
+    {
+        imageUrl: aeroUrl,
+        name: 'Aero Boost'
+    },
+    {
+        imageUrl: sunUrl,
+        name: 'Vitamin D'
+    },
+    {
+        imageUrl: coffeeUrl,
+        name: 'Coffee Stop'
+    },
+    {
+        imageUrl: tailwindUrl,
+        name: 'Tailwind'
+    },
+    {
+        imageUrl: groupRideUrl,
+        name: 'Group ride'
+    },
+    {
+        imageUrl: mudUrl,
+        name: 'Mud'
+    },
+    {
+        imageUrl: gravelUrl,
+        name: 'Gravel'
+    }
+]
 
 export default PowerUps;
