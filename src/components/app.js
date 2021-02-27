@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import useDebouncedEffect  from 'use-debounced-effect'
 
 import Header from './header'
 import Label from './label'
@@ -43,7 +44,15 @@ function App() {
         randomStats.distance = calculateDistance(randomStats)        
         setStats(randomStats)
     }, [])
-    
+
+    useEffect(() => {
+        if (photo) composeImage()
+    }, [photo, powerup, achievement])
+
+    useDebouncedEffect(()=>{
+        if (photo) composeImage()
+    }, 400, [customHeading, customDetails, name, friend, watts, gradient, stats, bpm, rpm]);
+        
     function calculateDistance(s) {        
         return Math.round(s.speed * hoursDecimal(s) * 10) / 10
     }
@@ -54,7 +63,7 @@ function App() {
         return s.hours + ((s.minutes + (s.seconds / 60)) / 60)
     }
 
-    async function composeImage(backgroundPhoto) {
+    async function composeImage() {
         const canvas = document.createElement('canvas')
         canvas.width = canvasSize.width
         canvas.height = canvasSize.height
@@ -63,9 +72,9 @@ function App() {
 
         // Background image
         const drawWidth = canvasSize.width
-        const drawHeight = drawWidth / backgroundPhoto.width * backgroundPhoto.height
+        const drawHeight = drawWidth / photo.width * photo.height
         const drawY = (canvasSize.height - drawHeight) / 2
-        ctx.drawImage(backgroundPhoto, 0, drawY, drawWidth, drawHeight)
+        ctx.drawImage(photo, 0, drawY, drawWidth, drawHeight)
         
         // Top bar
         ctx.drawImage(Images.topBar, 620, 21)
@@ -180,7 +189,6 @@ function App() {
                 img.src = progress.target.result
                 img.onload = function() {
                     setPhoto(img)
-                    composeImage(img)
                 };                
             };
             FR.readAsDataURL(target.files[0])
@@ -216,7 +224,7 @@ function App() {
 
     function onFormSubmit(e) {
         e.preventDefault()
-        composeImage(photo)
+        composeImage()
     }
     
     function onMoreOptionsClick(e) {
@@ -388,22 +396,19 @@ function App() {
                                 </div>
                             </>
                         }
-                        <div className="pt-2">
-                            <button className="bg-orange py-1 px-8 rounded text-white font-semibold mr-6">Update</button>
-                            <div className="inline-block">
-                                <a href="#advanced" onClick={(e) => onMoreOptionsClick(e)} className="text-gray-200">
-                                    <i className="fad fa-wrench pr-1 text-white"></i>
-                                    { showAdvanced ? 'Hide options' : 'More options...' }
-                                </a>
-                                {showAdvanced &&
-                                <a href="#calcspeed" onClick={(e) => onCalculateSpeedClick(e)}
-                                   className="text-gray-200 pl-6"
-                                   title="Automatically calculate the speed from the distance and time">
-                                    <i className="fad fa-tachometer pr-1 text-white"></i>
-                                    Calculate speed
-                                </a>
-                                }
-                            </div>
+                        <div className="pt-1">
+                            <a href="#advanced" onClick={(e) => onMoreOptionsClick(e)} className="text-gray-200">
+                                <i className="fas fa-wrench pr-1 text-orange"></i>
+                                { showAdvanced ? 'Hide options' : 'More options...' }
+                            </a>
+                            {showAdvanced &&
+                            <a href="#calcspeed" onClick={(e) => onCalculateSpeedClick(e)}
+                               className="text-gray-200 pl-6"
+                               title="Automatically calculate the speed from the distance and time">
+                                <i className="fas fa-tachometer pr-1 text-orange"></i>
+                                Calculate speed
+                            </a>
+                            }
                         </div>
                     </form>
                 </div>

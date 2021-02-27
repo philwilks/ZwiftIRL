@@ -15,6 +15,7 @@ import rideOn1 from './images/achievements/rideon1.png';
 import sun from './images/achievements/sun.png';
 import wheelie1 from './images/achievements/wheelie1.png';
 import wheelie2 from './images/achievements/wheelie2.png';
+import everested from './images/achievements/everested.png';
 
 const Achievements = [
     {
@@ -101,6 +102,11 @@ const Achievements = [
         imageUrl: sun,
         name: '1.21 Gigawatts',
         details: 'Hit 1200 watts'
+    },
+    {
+        imageUrl: everested,
+        name: 'Everested!',
+        details: 'Climb 29,029 feet in 1 activity'
     }
 ]
 
