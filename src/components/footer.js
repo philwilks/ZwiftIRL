@@ -3,7 +3,16 @@ import React from 'react'
 function Footer(props) {        
     return (
         <div className="text-center py-10 max-w-4xl mx-auto">
-            <p className="px-3 mt-12 border-t-2 border-gray-600 pt-6 text-gray-300 text-lg mb-2">
+            <p className="px-3 mt-8 border-t-2 border-gray-600 pt-6 text-white text-xl mb-2 font-bold">What's new in v2?</p>
+            <div className="max-w-2xl mx-auto text-left text-gray-300 mb-6 px-3">
+                <p className="my-3">Thank you so much for all the support for ZwiftIrl, it's been great seeing what you've made! In the first 5 says since lauch you created over 34,000 images 🤯</p>
+                <p className="my-3">Here's what's new in v2...</p>
+                <p className="my-3"><strong className="text-white">🏅 Achievements: </strong> As well as the classic route badges you can also select from 20 achievement badges. Of course you can also customise the title and details for these, so get creative!</p>
+                <p className="my-3"><strong className="text-white">🚀 Auto updating: </strong> The image now updates as you change options! </p>
+                <p className="my-3"><strong className="text-white">👌 Aspect ratio: </strong> The generated image now has a better aspect ratio so it doesn't get cropped when you post to Strava.</p>
+                <p className="my-3"><strong className="text-white">⚡️ New power-ups: </strong> Please welcome Group Ride and Gravel to the team.</p>
+            </div>
+            <p className="px-3 mt-8 border-t-0 border-gray-600 pt-6 text-gray-300 text-lg mb-2">
                 <a href="https://www.paypal.com/donate?hosted_button_id=CXZ9X9873ADC2" target="_blank" className="inline-block bg-red-500 text-white rounded-full py-1 px-8 font-bold mx-1 hover:opacity-80 mb-2 md:text-lg">
                     <i className="fas fa-heart text-lg pr-2"></i>
                     Donate
