@@ -50,8 +50,8 @@ function App() {
     function hoursDecimal(s) {
         return s.hours + ((s.minutes + (s.seconds / 60)) / 60)
     }
-    
-    function composeImage(backgroundPhoto) {
+
+    async function composeImage(backgroundPhoto) {
         const canvas = document.createElement('canvas')
         canvas.width = canvasSize.width
         canvas.height = canvasSize.height
@@ -97,7 +97,8 @@ function App() {
         
         // Power up
         if (powerup >= 0) {
-            ctx.drawImage(PowerUps[powerup].image, 320, 30)
+            const img = await imageAsync(PowerUps[powerup].imageUrl)
+            ctx.drawImage(img, 320, 30)
         }
 
         // Map
@@ -129,7 +130,7 @@ function App() {
         
         if (route) {
             // Route badge box
-            ctx.drawImage(Images.route, 0, 650)
+            ctx.drawImage(Images.banner, 0, 650)
             ctx.textAlign = 'right'
             ctx.font = canvasFont(70)
             ctx.fillStyle = Colors.white;
@@ -200,6 +201,15 @@ function App() {
     const powerupOptions = PowerUps.map((powerUp, index) =>
         <option value={index.toString()} key={index}>{powerUp.name}</option>
     );
+
+    function imageAsync(src) {
+        return new Promise((resolve, reject) => {
+            let img = new Image()
+            img.onload = () => resolve(img)
+            img.onerror = reject
+            img.src = src
+        })
+    }
     
     return (
         <>
