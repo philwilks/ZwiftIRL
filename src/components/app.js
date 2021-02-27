@@ -15,8 +15,8 @@ function App() {
     const [photo, setPhoto] = useState(null)
     const [name, setName] = useState('Zwift IRL 🏳️‍🌈')
     const [friend, setFriend] = useState('')
-    const [heading, setHeading] = useState('')
-    const [details, setDetails] = useState('')
+    const [customHeading, setCustomHeading] = useState('')
+    const [customDetails, setCustomDetails] = useState('')
     const [watts, setWatts] = useState(0)
     const [gradient, setGradient] = useState(0)
     const [stats, setStats] = useState({ })
@@ -133,14 +133,27 @@ function App() {
         }        
         
         // Achievement banner
-        if (achievement && heading) {
+        if (achievement) {
             ctx.drawImage(Images.banner, 0, 730)
             ctx.textAlign = 'right'
+
+            let badge, heading, details;
+            if (achievement === 'route') {
+                badge = Images.route
+                heading = customHeading
+                details = 'Great work! Keep exploring!'
+            }
+            else {
+                const index = parseInt(achievement.replace('achievement', ''))
+                badge = await imageAsync(Achievements[index].imageUrl)
+                heading = customHeading || Achievements[index].name
+                details = customDetails || Achievements[index].details                
+            }
             
             ctx.font = canvasFont(68)
             ctx.fillStyle = Colors.white;
             ctx.fillText(achievement === 'route' ? 'ROUTE COMPLETE' : 'ACHIEVEMENT UNLOCKED', 1547, 880)
-
+            
             ctx.font = canvasFont(70)
             ctx.fillStyle = Colors.white;
             ctx.fillText(heading, 1547, 954)
@@ -149,16 +162,9 @@ function App() {
 
             ctx.font = canvasFont(37)
             ctx.fillStyle = Colors.white;
-            ctx.fillText(achievement === 'route' ? 'Great work! Keep exploring!' : details, 1547, 1004)
+            ctx.fillText(details, 1547, 1004)
             
-            let badge;
-            if (achievement === 'route') {
-                badge = Images.route;
-            }
-            else {
-                const index = parseInt(achievement.replace('achievement', ''))
-                badge = await imageAsync(Achievements[index].imageUrl)
-            }
+            
             ctx.drawImage(badge, 265, 721)
         }
         
@@ -191,19 +197,10 @@ function App() {
     
     function onNameChanged(value) { setName(value) }    
     function onFriendChanged(value) { setFriend(value) }    
-    function onHeadingChanged(value) { setHeading(value) }
-    function onDetailsChanged(value) { setDetails(value) }
+    function onCustomHeadingChanged(value) { setCustomHeading(value) }
+    function onCustomDetailsChanged(value) { setCustomDetails(value) }
     function onPowerupChanged(value) { setPowerup(parseInt(value)) }
-    function onAchievementChanged(value) { 
-        setAchievement(value) 
-        if (value === 'route') setHeading('My route')
-        else if (value.indexOf('achievement') === 0) {            
-            const index = parseInt(value.replace('achievement', ''))
-            setHeading(Achievements[index].name)
-            setDetails(Achievements[index].details)
-        }
-        else setHeading('')
-    }
+    function onAchievementChanged(value) { setAchievement(value) }
     
     function onWattsChanged(value) { setWatts(parseInt(value)) }
     function onRpmChanged(value) { setRpm(parseInt(value)) }
@@ -290,8 +287,8 @@ function App() {
                                 {achievement === 'route' ?
                                     <div className="pr-6 mb-2">
                                         <Label>Route name:</Label>
-                                        <input type="text" value={heading}
-                                               onChange={(e) => onHeadingChanged(e.target.value)}
+                                        <input type="text" value={customHeading}
+                                               onChange={(e) => onCustomHeadingChanged(e.target.value)}
                                                className="bg-gray-700 text-white p-1 rounded placeholder-gray-500 md:w-80"
                                                placeholder="Make up a route!"/>
                                     </div>
@@ -299,15 +296,15 @@ function App() {
                                     <>
                                         <div className="pr-6 mb-2">
                                             <Label>Custom title:</Label>
-                                            <input type="text" value={heading}
-                                                   onChange={(e) => onHeadingChanged(e.target.value)}
+                                            <input type="text" value={customHeading}
+                                                   onChange={(e) => onCustomHeadingChanged(e.target.value)}
                                                    className="bg-gray-700 text-white p-1 rounded placeholder-gray-500"
                                                    placeholder="What did you do?"/>
                                         </div>
                                         <div className="pr-6 mb-2">
                                             <Label>Details:</Label>
-                                            <input type="text" value={details}
-                                                   onChange={(e) => onDetailsChanged(e.target.value)}
+                                            <input type="text" value={customDetails}
+                                                   onChange={(e) => onCustomDetailsChanged(e.target.value)}
                                                    className="bg-gray-700 text-white p-1 rounded placeholder-gray-500 md:w-80"
                                                    placeholder="Tell us more!"/>
                                         </div>

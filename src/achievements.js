@@ -19,7 +19,7 @@ import wheelie2 from './images/achievements/wheelie2.png';
 const Achievements = [
     {
         imageUrl: jelly,
-        name: 'Jelly legs',
+        name: 'Jelly Legs',
         details: 'Hold over 500 watts for 10 seconds'
     },
     {
@@ -64,7 +64,7 @@ const Achievements = [
     },
     {
         imageUrl: finish,
-        name: 'Completed A Workout',
+        name: 'Completed a Workout',
         details: 'Sweat!'
     },
     {
