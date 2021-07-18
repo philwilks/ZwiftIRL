@@ -72,6 +72,6 @@ CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS    
 168447cb3a3a   zwiftirl:2   "docker-entrypoint.s…"   42 seconds ago   Up 41 seconds   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp   zwiftirl
 ```
 
-Note: it could take some time to fully start the container/application, to show the application log use the (docker logs zwiftirl) command.
+Note: it could take some time to fully start the container/application, to show the application log use the `docker logs zwiftirl` command.
 
 When the application is started you can browse to [http://localhost:3000](http://localhost:3000).
