@@ -52,8 +52,9 @@ $ docker build -t zwiftirl:2 .
 Once the build process has been completed you can start the image.
 
 ```sh
-$ docker run -d -p:3000:3000 [imagename:version]
+$ docker run --name zwiftirl --detach --publish:3000:3000 [imagename:version]
 ```
 
-The Docker run command will start the image in the background (-d) and expose (-p) port 3000 from within the container to the outside world. Next fill in the image name that have been created earlier (zwiftirl:2) and hit enter to start the image.
-Once the container have been started (should not take more dan 30 second) you can browse to [http://localhost:3000](http://localhost:3000) to access the application.
+With the Docker run command will start a new container based on the image you have created earlier, the container name (--name) can be changed in this example it's "zwiftirl".
+The container will be started in the background (--detach) and expose (--publish) port 3000 from within the container to the outside the container (this can be change, to run multiple instances at the same time). Next fill in the image name that have been created earlier (zwiftirl:2) and hit enter to start the container.
+Once the container have been started (should take about ~30 second) you can browse to [http://localhost:3000](http://localhost:3000) to access the application.
