@@ -38,13 +38,13 @@ And make sure Docker is up and running.
 ### Create a Docker Image form the provided Dockerfile
 
 ```sh
-$ docker built -t [imagename:version] .
+$ docker build -t [imagename:version] .
 ```
 + The "imagename" is the name of the image that will be created, additional you can add a version number after the colon.
 + The dot at the end of the command refers to the Dockerfile in build directory.
 
 ```sh
-$ docker built -t zwiftirl:2 .
+$ docker build -t zwiftirl:2 .
 ```
 
 ### Running the created image
