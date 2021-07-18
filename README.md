@@ -28,3 +28,32 @@ In the project directory just run `npm start` which runs the app in the developm
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.
+
+
+## Running this project in a Docker container
+
+First install the Docker daemon (or on a PC/Mac install the [Docker Desktop](https://www.docker.com/products/docker-desktop)).
+And make sure Docker is up and running.
+
+### Create a Docker Image form the provided Dockerfile
+
+```sh
+$ docker built -t [imagename:version] .
+```
++ The "imagename" is the name of the image that will be created, additional you can add a version number after the colon.
++ The dot at the end of the command refers to the Dockerfile in build directory.
+
+```sh
+$ docker built -t zwiftirl:2 .
+```
+
+### Running the created image
+
+Once the build process has been completed you can start the image.
+
+```sh
+$ docker run -d -p:3000:3000 [imagename:version]
+```
+
+The Docker run command will start the image in the background (-d) and expose (-p) port 3000 from within the container to the outside world. Next fill in the image name that have been created earlier (zwiftirl:2) and hit enter to start the image.
+Once the container have been started (should not take more dan 30 second) you can browse to [http://localhost:3000](http://localhost:3000) to access the application.
